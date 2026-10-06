@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Market Prices - Smart Kisan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .market-tools {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .market-tools input,
+        .market-tools select {
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            min-width: 220px;
+        }
+
+        .market-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .price-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            border: 1px solid #e1e8e2;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        .price-card .icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .price-card strong {
+            display: block;
+            font-size: 24px;
+            margin: 6px 0;
+        }
+
+        .price-card small {
+            color: #666;
+        }
+
+        .highlight-row {
+            background: #eef9ef !important;
+            font-weight: bold;
+        }
+
+        .recommended {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #16833d;
+            color: white;
+            font-size: 11px;
+        }
+
+        .updated {
+            color: #666;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .market-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .market-tools input,
+            .market-tools select {
+                width: 100%;
+                min-width: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 Smart Kisan
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="marketplace.html">Marketplace</a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            MARKET LINKAGE
+        </div>
+
+        <h1>
+            Mandi / Market Prices 💰
+        </h1>
+
+        <p id="farmerInfo">
+            Checking your selected crop...
+        </p>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="market-summary">
+
+        <div class="price-card">
+            <div class="icon">🌾</div>
+
+            <small>Your Crop</small>
+
+            <strong id="farmerCrop">
+                Loading...
+            </strong>
+        </div>
+
+
+        <div class="price-card">
+            <div class="icon">💰</div>
+
+            <small>Highest Price</small>
+
+            <strong id="highestPrice">
+                ₹0
+            </strong>
+
+            <small>per Quintal</small>
+        </div>
+
+
+        <div class="price-card">
+            <div class="icon">🏪</div>
+
+            <small>Markets Available</small>
+
+            <strong id="marketCount">
+                0
+            </strong>
+
+            <small>market listings</small>
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="market-tools">
+
+        <input
+            type="text"
+            id="searchCrop"
+            placeholder="🔎 Search crop..."
+            onkeyup="filterMarket()"
+        >
+
+        <select id="marketFilter" onchange="filterMarket()">
+
+            <option value="all">
+                All Markets
+            </option>
+
+            <option value="Jaipur">
+                Jaipur
+            </option>
+
+            <option value="Kota">
+                Kota
+            </option>
+
+            <option value="Ganganagar">
+                Ganganagar
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- MARKET TABLE -->
+
+    <div class="table-wrap">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+                    <th>Crop</th>
+                    <th>Market</th>
+                    <th>Min Price</th>
+                    <th>Max Price</th>
+                    <th>Average</th>
+                    <th>Unit</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="marketTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <p class="updated">
+        🕐 Last updated: <span id="updatedTime"></span>
+    </p>
+
+
+    <div class="alert" style="margin-top:20px">
+
+        🌾 <strong>Farmer Tip:</strong>
+        Compare prices from different markets before selling your crop.
+        Transportation cost should also be considered.
+
+    </div>
+
+
+    <div class="alert danger" style="margin-top:15px">
+
+        ℹ️ <strong>Prototype Notice:</strong>
+        The prices shown here are sample project data.
+        The final version can connect this module to a verified
+        mandi/market-price data source.
+
+    </div>
+
+</main>
+
+
+<script>
+
+const marketData = [
+
+    {
+        crop: "Wheat",
+        market: "Jaipur",
+        min: 2300,
+        max: 2450,
+        unit: "Quintal"
+    },
+
+    {
+        crop: "Mustard",
+        market: "Jaipur",
+        min: 5300,
+        max: 5650,
+        unit: "Quintal"
+    },
+
+    {
+        crop: "Rice",
+        market: "Kota",
+        min: 2700,
+        max: 3000,
+        unit: "Quintal"
+    },
+
+    {
+        crop: "Cotton",
+        market: "Ganganagar",
+        min: 6700,
+        max: 7100,
+        unit: "Quintal"
+    },
+
+    {
+        crop: "Maize",
+        market: "Jaipur",
+        min: 2100,
+        max: 2300,
+        unit: "Quintal"
+    },
+
+    {
+        crop: "Bajra",
+        market: "Jaipur",
+        min: 2000,
+        max: 2200,
+        unit: "Quintal"
+    }
+
+];
+
+
+let farmerCrop = "";
+
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function loadFarmer() {
+
+    const storedUser =
+        localStorage.getItem("smartKisanUser");
+
+    if (!storedUser) {
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+
+    try {
+
+        const user = JSON.parse(storedUser);
+
+        farmerCrop = user.crop || "Wheat";
+
+        document.getElementById("farmerCrop").textContent =
+            farmerCrop;
+
+        document.getElementById("farmerInfo").textContent =
+            "Market prices for " + farmerCrop +
+            " and other major crops.";
+
+    }
+
+    catch (error) {
+
+        farmerCrop = "Wheat";
+
+    }
+
+}
+
+
+function displayMarket(data) {
+
+    const table =
+        document.getElementById("marketTable");
+
+    table.innerHTML = "";
+
+
+    data.forEach(item => {
+
+        const average =
+            Math.round((item.min + item.max) / 2);
+
+
+        const isFarmerCrop =
+            item.crop.toLowerCase() ===
+            farmerCrop.toLowerCase();
+
+
+        const row =
+            document.createElement("tr");
+
+
+        if (isFarmerCrop) {
+
+            row.classList.add("highlight-row");
+
+        }
+
+
+        row.innerHTML = `
+
+            <td>
+                ${item.crop}
+
+                ${
+                    isFarmerCrop
+                    ? '<span class="recommended">Your Crop</span>'
+                    : ''
+                }
+
+            </td>
+
+            <td>
+                ${item.market}
+            </td>
+
+            <td>
+                ₹${item.min.toLocaleString("en-IN")}
+            </td>
+
+            <td>
+                ₹${item.max.toLocaleString("en-IN")}
+            </td>
+
+            <td>
+                ₹${average.toLocaleString("en-IN")}
+            </td>
+
+            <td>
+                ${item.unit}
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+
+    updateSummary(data);
+
+}
+
+
+function updateSummary(data) {
+
+    document.getElementById("marketCount").textContent =
+        data.length;
+
+
+    if (data.length > 0) {
+
+        const highest =
+            Math.max(...data.map(item => item.max));
+
+        document.getElementById("highestPrice").textContent =
+            "₹" + highest.toLocaleString("en-IN");
+
+    }
+
+}
+
+
+function filterMarket() {
+
+    const search =
+        document
+        .getElementById("searchCrop")
+        .value
+        .toLowerCase();
+
+
+    const selectedMarket =
+        document
+        .getElementById("marketFilter")
+        .value;
+
+
+    const filtered =
+        marketData.filter(item => {
+
+            const cropMatch =
+                item.crop
+                .toLowerCase()
+                .includes(search);
+
+
+            const marketMatch =
+                selectedMarket === "all" ||
+                item.market === selectedMarket;
+
+
+            return cropMatch && marketMatch;
+
+        });
+
+
+    displayMarket(filtered);
+
+}
+
+
+loadFarmer();
+
+displayMarket(marketData);
+
+
+document.getElementById("updatedTime").textContent =
+    new Date().toLocaleString("en-IN");
+
+</script>
+
+</body>
+
+</html>

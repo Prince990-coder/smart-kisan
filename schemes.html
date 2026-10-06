@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Government Schemes - Smart Kisan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .scheme-tools {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .scheme-tools input,
+        .scheme-tools select {
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            min-width: 230px;
+        }
+
+        .scheme-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .scheme-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e1e8e2;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        .scheme-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .scheme-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .scheme-card p {
+            line-height: 1.6;
+        }
+
+        .scheme-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e8f6ea;
+            color: #137a3a;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .benefit-box {
+            background: #f5faf5;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .details strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .official-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: #16833d;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .official-btn:hover {
+            background: #106b31;
+        }
+
+        @media (max-width: 900px) {
+            .scheme-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .scheme-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scheme-tools input,
+            .scheme-tools select {
+                width: 100%;
+                min-width: 0;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 Smart Kisan
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="market.html">Market</a>
+        <a href="weather.html">Weather</a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMER SUPPORT
+        </div>
+
+        <h1>
+            Government Schemes 📢
+        </h1>
+
+        <p>
+            Explore important government support and agricultural schemes.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH / FILTER -->
+
+    <div class="scheme-tools">
+
+        <input
+            type="text"
+            id="schemeSearch"
+            placeholder="🔎 Search scheme..."
+            onkeyup="filterSchemes()"
+        >
+
+        <select
+            id="schemeCategory"
+            onchange="filterSchemes()"
+        >
+
+            <option value="all">
+                All Categories
+            </option>
+
+            <option value="Income Support">
+                Income Support
+            </option>
+
+            <option value="Insurance">
+                Crop Insurance
+            </option>
+
+            <option value="Support">
+                Agriculture Support
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- SCHEMES -->
+
+    <div class="scheme-grid" id="schemeGrid">
+
+
+        <!-- PM KISAN -->
+
+        <div
+            class="scheme-card"
+            data-category="Income Support"
+        >
+
+            <div class="scheme-icon">
+                🌾
+            </div>
+
+            <span class="scheme-tag">
+                Income Support
+            </span>
+
+            <h3>
+                PM-KISAN
+            </h3>
+
+            <p>
+                Pradhan Mantri Kisan Samman Nidhi provides
+                income support to eligible landholding farmer families.
+            </p>
+
+            <div class="benefit-box">
+
+                <strong>
+                    💰 Benefit
+                </strong>
+
+                ₹6,000 per year in three equal installments
+                for eligible beneficiaries.
+
+            </div>
+
+            <div class="details">
+
+                <strong>
+                    👨‍🌾 Important
+                </strong>
+
+                Eligibility and exclusions are determined according
+                to the official PM-KISAN guidelines.
+
+            </div>
+
+            <a
+                class="official-btn"
+                href="https://pmkisan.gov.in/"
+                target="_blank"
+            >
+                Official Website →
+            </a>
+
+        </div>
+
+
+        <!-- PMFBY -->
+
+        <div
+            class="scheme-card"
+            data-category="Insurance"
+        >
+
+            <div class="scheme-icon">
+                🛡️
+            </div>
+
+            <span class="scheme-tag">
+                Insurance
+            </span>
+
+            <h3>
+                Pradhan Mantri Fasal Bima Yojana
+            </h3>
+
+            <p>
+                Crop insurance support for farmers against
+                eligible crop-related risks.
+            </p>
+
+            <div class="benefit-box">
+
+                <strong>
+                    🛡️ Benefit
+                </strong>
+
+                Crop insurance services, premium information,
+                application and policy-status facilities.
+
+            </div>
+
+            <div class="details">
+
+                <strong>
+                    📋 Farmer Services
+                </strong>
+
+                Farmers can access insurance information,
+                premium calculator and application/status services.
+
+            </div>
+
+            <a
+                class="official-btn"
+                href="https://pmfby.gov.in/"
+                target="_blank"
+            >
+                Official Website →
+            </a>
+
+        </div>
+
+
+        <!-- AGRICULTURE SUPPORT -->
+
+        <div
+            class="scheme-card"
+            data-category="Support"
+        >
+
+            <div class="scheme-icon">
+                🚜
+            </div>
+
+            <span class="scheme-tag">
+                Agriculture Support
+            </span>
+
+            <h3>
+                Agriculture Support
+            </h3>
+
+            <p>
+                A section for discovering relevant central and
+                state-level agricultural support programs.
+            </p>
+
+            <div class="benefit-box">
+
+                <strong>
+                    🌱 Support Areas
+                </strong>
+
+                Farming inputs, agricultural infrastructure,
+                technology and other farmer-support initiatives.
+
+            </div>
+
+            <div class="details">
+
+                <strong>
+                    📢 Smart Kisan Feature
+                </strong>
+
+                Future versions can connect this section
+                with verified government scheme databases.
+
+            </div>
+
+            <a
+                class="official-btn"
+                href="https://agriwelfare.gov.in/"
+                target="_blank"
+            >
+                Agriculture Ministry →
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="noResults"
+        class="alert danger"
+        style="display:none;margin-top:25px;"
+    >
+        No matching scheme found.
+    </div>
+
+
+    <div class="alert" style="margin-top:25px;">
+
+        ℹ️ <strong>Important:</strong>
+        Scheme eligibility, benefits and application requirements
+        can change. Always verify the latest information on the
+        official government website before applying.
+
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function filterSchemes() {
+
+    const search =
+        document
+        .getElementById("schemeSearch")
+        .value
+        .toLowerCase();
+
+
+    const category =
+        document
+        .getElementById("schemeCategory")
+        .value;
+
+
+    const cards =
+        document.querySelectorAll(".scheme-card");
+
+
+    let visibleCount = 0;
+
+
+    cards.forEach(card => {
+
+        const text =
+            card.textContent.toLowerCase();
+
+
+        const cardCategory =
+            card.dataset.category;
+
+
+        const searchMatch =
+            text.includes(search);
+
+
+        const categoryMatch =
+            category === "all" ||
+            cardCategory === category;
+
+
+        if (searchMatch && categoryMatch) {
+
+            card.style.display = "block";
+
+            visibleCount++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+
+    document.getElementById("noResults").style.display =
+        visibleCount === 0 ? "block" : "none";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

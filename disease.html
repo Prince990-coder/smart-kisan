@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crop Doctor - Smart Kisan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .doctor-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .upload-box {
+            border: 2px dashed #16833d;
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+            background: #f7fcf8;
+        }
+
+        .upload-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        .upload-box input {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .preview-box {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .preview-box img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            background: white;
+        }
+
+        .result-box {
+            min-height: 300px;
+        }
+
+        .result-title {
+            color: #137a3a;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .confidence {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: #e8f6ea;
+            color: #137a3a;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .advice-list {
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+
+        .advice-list li {
+            margin-bottom: 8px;
+        }
+
+        .warning {
+            margin-top: 20px;
+            padding: 15px;
+            border-left: 4px solid #d69e00;
+            background: #fff8df;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 750px) {
+            .doctor-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 Smart Kisan
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="expert.html">Expert Advice</a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            CROP HEALTH
+        </div>
+
+        <h1>
+            Crop Doctor 🦠
+        </h1>
+
+        <p>
+            Upload a crop image to check its health.
+        </p>
+
+    </div>
+
+
+    <div class="doctor-layout">
+
+
+        <!-- UPLOAD SECTION -->
+
+        <div class="card">
+
+            <h2>📷 Upload Crop Image</h2>
+
+            <p class="muted">
+                Select the crop and upload a clear image of the affected leaf.
+            </p>
+
+
+            <div class="form-group">
+
+                <label for="crop">
+                    Select Crop
+                </label>
+
+                <select id="crop">
+
+                    <option value="">
+                        Select crop
+                    </option>
+
+                    <option value="Wheat">
+                        Wheat
+                    </option>
+
+                    <option value="Rice">
+                        Rice
+                    </option>
+
+                    <option value="Mustard">
+                        Mustard
+                    </option>
+
+                    <option value="Cotton">
+                        Cotton
+                    </option>
+
+                    <option value="Maize">
+                        Maize
+                    </option>
+
+                    <option value="Bajra">
+                        Bajra
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="upload-box">
+
+                <div class="upload-icon">
+                    🌱
+                </div>
+
+                <strong>
+                    Choose Crop Image
+                </strong>
+
+                <p class="muted">
+                    JPG, PNG or JPEG
+                </p>
+
+                <input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onchange="previewImage()"
+                >
+
+            </div>
+
+
+            <div id="previewBox" class="preview-box">
+
+                <p>
+                    <strong>Image Preview</strong>
+                </p>
+
+                <img id="preview" alt="Crop image preview">
+
+            </div>
+
+
+            <button
+                class="btn btn-primary"
+                style="margin-top:20px;width:100%;"
+                onclick="analyze()"
+            >
+                🔍 Analyze Crop
+            </button>
+
+        </div>
+
+
+        <!-- RESULT SECTION -->
+
+        <div class="card result-box">
+
+            <h2>
+                🩺 Crop Health Result
+            </h2>
+
+            <div id="result">
+
+                <div class="alert">
+
+                    🌿 <strong>Ready for Analysis</strong>
+
+                    <p style="margin-bottom:0;">
+                        Select a crop and upload an image.
+                        Then click <strong>Analyze Crop</strong>.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="warning">
+
+        ⚠️ <strong>Important:</strong>
+        This current version is a project prototype and does not contain
+        a trained AI disease-detection model. The result shown by this
+        prototype is for demonstration only. Actual disease diagnosis
+        should be verified by an agricultural expert.
+
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function previewImage() {
+
+    const file =
+        document.getElementById("image").files[0];
+
+    const previewBox =
+        document.getElementById("previewBox");
+
+    const preview =
+        document.getElementById("preview");
+
+
+    if (!file) {
+
+        previewBox.style.display = "none";
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(event) {
+
+        preview.src =
+            event.target.result;
+
+        previewBox.style.display =
+            "block";
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function analyze() {
+
+    const crop =
+        document.getElementById("crop").value;
+
+    const file =
+        document.getElementById("image").files[0];
+
+    const result =
+        document.getElementById("result");
+
+
+    if (!crop) {
+
+        result.innerHTML = `
+
+            <div class="alert danger">
+
+                🌾 Please select a crop first.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (!file) {
+
+        result.innerHTML = `
+
+            <div class="alert danger">
+
+                📷 Please upload a crop image first.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+        DEMO ASSESSMENT
+
+        This is NOT an AI model.
+        It is only for prototype demonstration.
+    */
+
+
+    let disease =
+        "Healthy / Further Verification Recommended";
+
+    let confidence =
+        "Demo Assessment";
+
+    let advice = [
+
+        "Keep monitoring the crop regularly.",
+
+        "Maintain proper irrigation.",
+
+        "Remove severely damaged leaves if necessary.",
+
+        "Consult an agricultural expert if symptoms increase."
+
+    ];
+
+
+    if (crop === "Wheat") {
+
+        disease =
+            "Possible Leaf Health Issue";
+
+        advice = [
+
+            "Check leaves for yellow or brown spots.",
+
+            "Avoid unnecessary irrigation.",
+
+            "Monitor the crop for spreading symptoms.",
+
+            "Consult an agricultural expert before using pesticides."
+
+        ];
+
+    }
+
+
+    if (crop === "Rice") {
+
+        disease =
+            "Possible Leaf Disease";
+
+        advice = [
+
+            "Check leaves for spots or discoloration.",
+
+            "Maintain appropriate field water levels.",
+
+            "Remove severely affected plant material where appropriate.",
+
+            "Seek expert confirmation before treatment."
+
+        ];
+
+    }
+
+
+    if (crop === "Mustard") {
+
+        disease =
+            "Possible Leaf Spot / Stress";
+
+        advice = [
+
+            "Inspect leaves for dark or yellow spots.",
+
+            "Avoid excessive moisture.",
+
+            "Monitor nearby plants for similar symptoms.",
+
+            "Consult an agricultural expert for confirmation."
+
+        ];
+
+    }
+
+
+    if (crop === "Cotton") {
+
+        disease =
+            "Possible Leaf Health Problem";
+
+        advice = [
+
+            "Check leaves carefully for spots or curling.",
+
+            "Inspect the crop for insects or pests.",
+
+            "Maintain proper irrigation.",
+
+            "Get expert confirmation before pesticide application."
+
+        ];
+
+    }
+
+
+    result.innerHTML = `
+
+        <div class="alert">
+
+            <div class="result-title">
+
+                🌱 ${disease}
+
+            </div>
+
+            <span class="confidence">
+
+                ${confidence}
+
+            </span>
+
+            <p>
+
+                <strong>Crop:</strong>
+                ${crop}
+
+            </p>
+
+            <p>
+
+                <strong>Image:</strong>
+                ${file.name}
+
+            </p>
+
+        </div>
+
+
+        <h3>
+            🌾 Recommended Precautions
+        </h3>
+
+
+        <ul class="advice-list">
+
+            ${advice.map(item =>
+
+                `<li>${item}</li>`
+
+            ).join("")}
+
+        </ul>
+
+
+        <div class="alert">
+
+            👨‍🌾 <strong>Expert Verification:</strong>
+
+            For accurate disease identification and pesticide
+            recommendation, consult an agricultural expert.
+
+        </div>
+
+    `;
+
+}
+
+</script>
+
+</body>
+
+</html>

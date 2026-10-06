@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farmer Login - Smart Kisan</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f3;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #137a3a;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            color: #173b24;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #16833d;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #16833d;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #106b31;
+        }
+
+        .form-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .form-note a {
+            color: #16833d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <a class="logo" href="index.html">
+            🌾 Smart Kisan
+        </a>
+
+        <h1>Farmer Login</h1>
+
+        <p class="subtitle">
+            Login to access your farmer dashboard.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+
+                <input
+                    id="mobile"
+                    type="tel"
+                    placeholder="Enter mobile number"
+                    maxlength="10"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+        <p class="form-note">
+            New farmer?
+            <a href="register.html">Create an account</a>
+        </p>
+
+        <p class="form-note">
+            <a href="index.html">← Back to Home</a>
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const mobile = document.getElementById("mobile").value;
+    const password = document.getElementById("password").value;
+
+    try {
+
+        const response = await fetch("http://localhost:5000/api/login", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                mobile: mobile,
+                password: password
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+
+            alert("Login successful!");
+
+            localStorage.setItem(
+                "smartKisanUser",
+                JSON.stringify(data.farmer)
+            );
+
+            window.location.href = "dashboard.html";
+
+        } else {
+
+            alert(data.message);
+
+        }
+
+    } catch (error) {
+
+        console.error("Login error:", error);
+
+        alert("Backend server se connection nahi ho pa raha.");
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

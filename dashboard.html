@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - Smart Kisan</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body onload="requireLogin()">
+
+<header class="navbar">
+    <a class="logo" href="dashboard.html">🌾 Smart Kisan</a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html">Home</a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+    </nav>
+</header>
+
+<main class="dashboard">
+    <div class="container">
+
+        <div class="welcome">
+            <div>
+                <div class="eyebrow">FARMER DASHBOARD</div>
+                <h1>Welcome, <span data-user>Farmer</span> 👋</h1>
+                <p class="muted">Your farming services in one place.</p>
+            </div>
+
+            <span class="tag">Demo Portal</span>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="stat-grid">
+
+            <div class="stat">
+                🌡️
+                <strong>28°C</strong>
+                <small>Today's Weather</small>
+            </div>
+
+            <div class="stat">
+                💧
+                <strong>62%</strong>
+                <small>Humidity</small>
+            </div>
+
+            <div class="stat">
+                🌾
+                <strong>₹2,450</strong>
+                <small>Sample Wheat Price</small>
+            </div>
+
+            <div class="stat">
+                📢
+                <strong>3</strong>
+                <small>Useful Alerts</small>
+            </div>
+
+        </div>
+
+        <!-- Main Features -->
+        <div class="grid">
+
+            <div class="card">
+                <div class="icon">🌦️</div>
+                <h3>Weather</h3>
+                <p>Weather forecast and farming alerts.</p>
+                <a class="card-link" href="weather.html">Open →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">💰</div>
+                <h3>Market Prices</h3>
+                <p>Compare sample mandi prices.</p>
+                <a class="card-link" href="market.html">Open →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">🦠</div>
+                <h3>Crop Doctor</h3>
+                <p>Upload crop image for a demo assessment.</p>
+                <a class="card-link" href="disease.html">Open →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">📢</div>
+                <h3>Schemes</h3>
+                <p>Explore agricultural support information.</p>
+                <a class="card-link" href="schemes.html">Open →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">🛒</div>
+                <h3>Marketplace</h3>
+                <p>Browse products and buyer listings.</p>
+                <a class="card-link" href="marketplace.html">Open →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">👨‍🌾</div>
+                <h3>Expert Advice</h3>
+                <p>Read and submit farming questions.</p>
+                <a class="card-link" href="expert.html">Open →</a>
+            </div>
+
+            <!-- Community -->
+            <div class="card">
+                <div class="icon">👥</div>
+                <h3>Community</h3>
+                <p>Connect with farmers and discuss farming topics.</p>
+                <a class="card-link" href="community.html">Open →</a>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

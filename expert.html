@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expert Advice - Smart Kisan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .question-box {
+            margin-top: 25px;
+        }
+
+        .question-form {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .question-form input,
+        .question-form select,
+        .question-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .question-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .questions-section {
+            margin-top: 30px;
+        }
+
+        .question-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            border: 1px solid #e1e8e2;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+            margin-bottom: 18px;
+        }
+
+        .question-category {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e8f6ea;
+            color: #137a3a;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .question-text {
+            font-size: 17px;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .question-meta {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .expert-response {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5faf5;
+            border-left: 4px solid #16833d;
+            border-radius: 8px;
+        }
+
+        .expert-badge {
+            font-weight: bold;
+            color: #137a3a;
+            margin-bottom: 8px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 Smart Kisan
+    </a>
+
+    <nav>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="community.html">
+            Community
+        </a>
+
+        <a href="weather.html">
+            Weather
+        </a>
+
+        <button
+            class="btn btn-outline"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            AGRICULTURAL GUIDANCE
+        </div>
+
+        <h1>
+            Expert Advice 👨‍🌾
+        </h1>
+
+        <p>
+            Ask questions about crops, pests, irrigation and farming practices.
+        </p>
+
+    </div>
+
+
+    <!-- QUESTION FORM -->
+
+    <div class="card question-box">
+
+        <h2>
+            📝 Ask an Agricultural Question
+        </h2>
+
+        <p class="muted">
+            Submit your farming problem and keep track of your questions.
+        </p>
+
+
+        <div class="question-form">
+
+
+            <div>
+
+                <label>
+                    Category
+                </label>
+
+                <select id="category">
+
+                    <option value="">
+                        Select category
+                    </option>
+
+                    <option value="Crop Management">
+                        🌱 Crop Management
+                    </option>
+
+                    <option value="Pest Management">
+                        🐛 Pest Management
+                    </option>
+
+                    <option value="Water Management">
+                        💧 Water Management
+                    </option>
+
+                    <option value="Soil & Fertilizer">
+                        🌍 Soil & Fertilizer
+                    </option>
+
+                    <option value="Weather">
+                        🌦️ Weather
+                    </option>
+
+                    <option value="Other">
+                        📌 Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Your Question
+                </label>
+
+                <textarea
+                    id="question"
+                    placeholder="Example: My wheat leaves are turning yellow. What should I check?"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="btn btn-primary"
+                onclick="submitQuestion()"
+            >
+                Submit Question
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUESTIONS -->
+
+    <div class="questions-section">
+
+        <div class="page-title">
+
+            <div class="eyebrow">
+                MY QUESTIONS
+            </div>
+
+            <h2>
+                Previous Questions 💬
+            </h2>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <input
+                id="questionSearch"
+                type="text"
+                placeholder="🔎 Search your questions..."
+                onkeyup="filterQuestions()"
+            >
+
+        </div>
+
+
+        <div id="questionList">
+
+        </div>
+
+    </div>
+
+
+    <!-- KNOWLEDGE CARDS -->
+
+    <div
+        class="grid"
+        style="margin-top:30px"
+    >
+
+        <div class="card">
+
+            <h3>
+                🌱 Crop Management
+            </h3>
+
+            <p>
+                Use timely sowing, irrigation and nutrient
+                planning according to crop requirements.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                🐛 Pest Management
+            </h3>
+
+            <p>
+                Monitor crop symptoms early and consult a
+                qualified expert before treatment.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                💧 Water Management
+            </h3>
+
+            <p>
+                Plan irrigation based on crop stage,
+                soil conditions and weather.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="alert"
+        style="margin-top:25px"
+    >
+
+        👨‍🌾 <strong>Expert Verification:</strong>
+        This prototype provides general farming guidance.
+        For disease diagnosis, pesticide use or serious crop
+        problems, farmers should consult a qualified agricultural expert.
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+let questions = [];
+
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function getFarmerName() {
+
+    const storedUser =
+        localStorage.getItem("smartKisanUser");
+
+
+    if (!storedUser) {
+
+        return "Farmer";
+
+    }
+
+
+    try {
+
+        const user =
+            JSON.parse(storedUser);
+
+        return user.name || "Farmer";
+
+    }
+
+    catch (error) {
+
+        return "Farmer";
+
+    }
+
+}
+
+
+function loadQuestions() {
+
+    const saved =
+        localStorage.getItem("smartKisanQuestions");
+
+
+    if (saved) {
+
+        try {
+
+            questions =
+                JSON.parse(saved);
+
+        }
+
+        catch (error) {
+
+            questions = [];
+
+        }
+
+    }
+
+
+    displayQuestions(questions);
+
+}
+
+
+function displayQuestions(data) {
+
+    const container =
+        document.getElementById("questionList");
+
+
+    container.innerHTML = "";
+
+
+    if (data.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                💬 No questions submitted yet.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach(item => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "question-card";
+
+
+        card.innerHTML = `
+
+            <span class="question-category">
+                ${item.category}
+            </span>
+
+
+            <div class="question-text">
+                ${item.question}
+            </div>
+
+
+            <div class="question-meta">
+
+                👤 ${item.name}
+                &nbsp; | &nbsp;
+                🕐 ${item.date}
+
+            </div>
+
+
+            <div class="expert-response">
+
+                <div class="expert-badge">
+                    👨‍🌾 Smart Kisan Expert Response
+                </div>
+
+                ${item.response}
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+function submitQuestion() {
+
+    const category =
+        document.getElementById("category").value;
+
+
+    const question =
+        document.getElementById("question").value.trim();
+
+
+    if (!category) {
+
+        alert("Please select a question category.");
+
+        return;
+
+    }
+
+
+    if (!question) {
+
+        alert("Please enter your question.");
+
+        return;
+
+    }
+
+
+    const newQuestion = {
+
+        category: category,
+
+        question: question,
+
+        name: getFarmerName(),
+
+        date: new Date().toLocaleString("en-IN"),
+
+        response:
+            getDemoResponse(category)
+
+    };
+
+
+    questions.unshift(newQuestion);
+
+
+    localStorage.setItem(
+        "smartKisanQuestions",
+        JSON.stringify(questions)
+    );
+
+
+    document.getElementById("category").value = "";
+
+    document.getElementById("question").value = "";
+
+
+    displayQuestions(questions);
+
+
+    alert(
+        "✅ Your question has been submitted successfully!"
+    );
+
+}
+
+
+function getDemoResponse(category) {
+
+    if (category === "Crop Management") {
+
+        return `
+            Monitor crop growth regularly and ensure
+            appropriate irrigation, nutrients and timely
+            field operations according to the crop stage.
+            An agricultural expert can provide crop-specific advice.
+        `;
+
+    }
+
+
+    if (category === "Pest Management") {
+
+        return `
+            First identify the pest or symptom correctly.
+            Avoid using pesticides without proper identification.
+            Consult an agricultural expert before treatment.
+        `;
+
+    }
+
+
+    if (category === "Water Management") {
+
+        return `
+            Irrigation should consider crop stage, soil condition
+            and current weather. Avoid unnecessary irrigation
+            when rainfall is expected.
+        `;
+
+    }
+
+
+    if (category === "Soil & Fertilizer") {
+
+        return `
+            Soil testing can help determine nutrient requirements.
+            Fertilizer application should be based on crop needs
+            and recommended agricultural practices.
+        `;
+
+    }
+
+
+    if (category === "Weather") {
+
+        return `
+            Check the latest weather forecast before irrigation,
+            spraying or harvesting. Weather conditions can
+            significantly affect field operations.
+        `;
+
+    }
+
+
+    return `
+        Your question has been recorded.
+        For crop-specific or serious agricultural problems,
+        please consult a qualified agricultural expert.
+    `;
+
+}
+
+
+function filterQuestions() {
+
+    const search =
+        document
+        .getElementById("questionSearch")
+        .value
+        .toLowerCase();
+
+
+    const filtered =
+        questions.filter(item => {
+
+            return (
+                item.question
+                .toLowerCase()
+                .includes(search)
+            );
+
+        });
+
+
+    displayQuestions(filtered);
+
+}
+
+
+loadQuestions();
+
+</script>
+
+
+</body>
+
+</html>

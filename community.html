@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Community - Smart Kisan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .community-tools {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .community-tools input,
+        .community-tools select {
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            min-width: 220px;
+        }
+
+        .post-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .post-form input,
+        .post-form select,
+        .post-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .post-form textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .community-post {
+            background: white;
+            padding: 23px;
+            border-radius: 14px;
+            border: 1px solid #e1e8e2;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+            margin-bottom: 18px;
+        }
+
+        .post-category {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e8f6ea;
+            color: #137a3a;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .post-title {
+            margin-top: 12px;
+            margin-bottom: 8px;
+        }
+
+        .post-text {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .post-meta {
+            color: #777;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 13px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background: #f1f8f3;
+        }
+
+        .comments {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .comment {
+            background: #f7faf7;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .comment-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+
+            .community-tools input,
+            .community-tools select {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .comment-form {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 Smart Kisan
+    </a>
+
+    <nav>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="expert.html">
+            Expert Advice
+        </a>
+
+        <a href="weather.html">
+            Weather
+        </a>
+
+        <button
+            class="btn btn-outline"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMER COMMUNITY
+        </div>
+
+        <h1>
+            Community 👥
+        </h1>
+
+        <p>
+            Share farming knowledge, questions and experiences
+            with other farmers.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="community-tools">
+
+        <input
+            id="postSearch"
+            type="text"
+            placeholder="🔎 Search discussions..."
+            onkeyup="filterPosts()"
+        >
+
+
+        <select
+            id="postCategory"
+            onchange="filterPosts()"
+        >
+
+            <option value="all">
+                All Categories
+            </option>
+
+            <option value="Crop">
+                🌾 Crop Farming
+            </option>
+
+            <option value="Weather">
+                🌧️ Weather
+            </option>
+
+            <option value="Market">
+                💰 Market
+            </option>
+
+            <option value="General">
+                💬 General
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- CREATE POST -->
+
+    <div class="card">
+
+        <h2>
+            ➕ Start a Discussion
+        </h2>
+
+        <p class="muted">
+            Ask other farmers a question or share your experience.
+        </p>
+
+
+        <div class="post-form">
+
+            <div>
+
+                <label>
+                    Category
+                </label>
+
+                <select id="newCategory">
+
+                    <option value="">
+                        Select category
+                    </option>
+
+                    <option value="Crop">
+                        🌾 Crop Farming
+                    </option>
+
+                    <option value="Weather">
+                        🌧️ Weather
+                    </option>
+
+                    <option value="Market">
+                        💰 Market
+                    </option>
+
+                    <option value="General">
+                        💬 General
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Discussion Title
+                </label>
+
+                <input
+                    id="newTitle"
+                    type="text"
+                    placeholder="Example: Best wheat farming practices?"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Your Discussion
+                </label>
+
+                <textarea
+                    id="newPost"
+                    placeholder="Write your question or share your farming experience..."
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="btn btn-primary"
+                onclick="createPost()"
+            >
+                Publish Discussion
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- POSTS -->
+
+    <div
+        style="margin-top:30px"
+        id="postList"
+    >
+
+    </div>
+
+
+    <div
+        class="alert"
+        style="margin-top:25px"
+    >
+
+        👥 <strong>Community Tip:</strong>
+        Always verify important agricultural, pesticide and
+        crop-treatment information with a qualified expert.
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+const defaultPosts = [
+
+    {
+        category: "Crop",
+        title: "Wheat Farming",
+        text:
+            "What are good practices for improving wheat crop health?",
+        name: "Farmer Community",
+        likes: 12,
+        comments: [
+            "Regular monitoring and timely irrigation can help.",
+            "Check soil nutrients according to crop requirements."
+        ],
+        date: "Today"
+    },
+
+
+    {
+        category: "Weather",
+        title: "Rain Alert",
+        text:
+            "How should farmers prepare fields before heavy rainfall?",
+        name: "Farmer Community",
+        likes: 8,
+        comments: [
+            "Check drainage arrangements before heavy rain."
+        ],
+        date: "Today"
+    },
+
+
+    {
+        category: "Market",
+        title: "Market Discussion",
+        text:
+            "Farmers discuss crop selling and market information.",
+        name: "Farmer Community",
+        likes: 15,
+        comments: [
+            "Compare prices from multiple markets before selling."
+        ],
+        date: "Yesterday"
+    }
+
+];
+
+
+let posts = [];
+
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function getFarmerName() {
+
+    const storedUser =
+        localStorage.getItem("smartKisanUser");
+
+
+    if (!storedUser) {
+
+        return "Farmer";
+
+    }
+
+
+    try {
+
+        const user =
+            JSON.parse(storedUser);
+
+        return user.name || "Farmer";
+
+    }
+
+    catch (error) {
+
+        return "Farmer";
+
+    }
+
+}
+
+
+function loadPosts() {
+
+    const saved =
+        localStorage.getItem("smartKisanPosts");
+
+
+    if (saved) {
+
+        try {
+
+            posts =
+                JSON.parse(saved);
+
+        }
+
+        catch (error) {
+
+            posts =
+                [...defaultPosts];
+
+        }
+
+    } else {
+
+        posts =
+            [...defaultPosts];
+
+    }
+
+
+    displayPosts(posts);
+
+}
+
+
+function displayPosts(data) {
+
+    const container =
+        document.getElementById("postList");
+
+
+    container.innerHTML = "";
+
+
+    if (data.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                🔎 No matching discussions found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach((post, index) => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "community-post";
+
+
+        const commentsHTML =
+            post.comments.map(comment => `
+
+                <div class="comment">
+                    💬 ${comment}
+                </div>
+
+            `).join("");
+
+
+        card.innerHTML = `
+
+            <span class="post-category">
+                ${post.category}
+            </span>
+
+
+            <h3 class="post-title">
+                ${post.title}
+            </h3>
+
+
+            <div class="post-text">
+                ${post.text}
+            </div>
+
+
+            <div class="post-meta">
+
+                👤 ${post.name}
+                &nbsp; | &nbsp;
+                🕐 ${post.date}
+
+            </div>
+
+
+            <div class="post-actions">
+
+                <button
+                    class="action-btn"
+                    onclick="likePost(${index})"
+                >
+                    ❤️ ${post.likes}
+                </button>
+
+
+                <button
+                    class="action-btn"
+                    onclick="focusComment(${index})"
+                >
+                    💬 ${post.comments.length} Replies
+                </button>
+
+            </div>
+
+
+            <div class="comments">
+
+                ${commentsHTML}
+
+
+                <div class="comment-form">
+
+                    <input
+                        id="comment-${index}"
+                        type="text"
+                        placeholder="Write a reply..."
+                    >
+
+
+                    <button
+                        class="action-btn"
+                        onclick="addComment(${index})"
+                    >
+                        Reply
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+function createPost() {
+
+    const category =
+        document.getElementById("newCategory").value;
+
+
+    const title =
+        document.getElementById("newTitle").value.trim();
+
+
+    const text =
+        document.getElementById("newPost").value.trim();
+
+
+    if (!category) {
+
+        alert("Please select a category.");
+
+        return;
+
+    }
+
+
+    if (!title) {
+
+        alert("Please enter a discussion title.");
+
+        return;
+
+    }
+
+
+    if (!text) {
+
+        alert("Please write your discussion.");
+
+        return;
+
+    }
+
+
+    const newPost = {
+
+        category: category,
+
+        title: title,
+
+        text: text,
+
+        name: getFarmerName(),
+
+        likes: 0,
+
+        comments: [],
+
+        date: new Date().toLocaleString("en-IN")
+
+    };
+
+
+    posts.unshift(newPost);
+
+
+    localStorage.setItem(
+        "smartKisanPosts",
+        JSON.stringify(posts)
+    );
+
+
+    document.getElementById("newCategory").value = "";
+
+    document.getElementById("newTitle").value = "";
+
+    document.getElementById("newPost").value = "";
+
+
+    displayPosts(posts);
+
+
+    alert(
+        "✅ Discussion published successfully!"
+    );
+
+}
+
+
+function likePost(index) {
+
+    posts[index].likes++;
+
+    savePosts();
+
+    displayPosts(posts);
+
+}
+
+
+function addComment(index) {
+
+    const input =
+        document.getElementById(
+            "comment-" + index
+        );
+
+
+    const comment =
+        input.value.trim();
+
+
+    if (!comment) {
+
+        alert("Please write a reply.");
+
+        return;
+
+    }
+
+
+    posts[index].comments.push(
+        getFarmerName() + ": " + comment
+    );
+
+
+    savePosts();
+
+    displayPosts(posts);
+
+}
+
+
+function focusComment(index) {
+
+    const input =
+        document.getElementById(
+            "comment-" + index
+        );
+
+
+    if (input) {
+
+        input.focus();
+
+    }
+
+}
+
+
+function savePosts() {
+
+    localStorage.setItem(
+        "smartKisanPosts",
+        JSON.stringify(posts)
+    );
+
+}
+
+
+function filterPosts() {
+
+    const search =
+        document
+        .getElementById("postSearch")
+        .value
+        .toLowerCase();
+
+
+    const category =
+        document
+        .getElementById("postCategory")
+        .value;
+
+
+    const filtered =
+        posts.filter(post => {
+
+            const text =
+                (
+                    post.title +
+                    " " +
+                    post.text +
+                    " " +
+                    post.name
+                ).toLowerCase();
+
+
+            const searchMatch =
+                text.includes(search);
+
+
+            const categoryMatch =
+                category === "all" ||
+                post.category === category;
+
+
+            return searchMatch && categoryMatch;
+
+        });
+
+
+    displayPosts(filtered);
+
+}
+
+
+loadPosts();
+
+</script>
+
+
+</body>
+
+</html>

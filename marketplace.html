@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Marketplace - Smart Kisan</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .market-tools {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .market-tools input,
+        .market-tools select {
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            min-width: 220px;
+        }
+
+        .marketplace-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .listing-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e1e8e2;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        .listing-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .listing-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e8f6ea;
+            color: #137a3a;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .listing-price {
+            font-size: 21px;
+            font-weight: bold;
+            color: #137a3a;
+            margin: 15px 0;
+        }
+
+        .listing-info {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .listing-info strong {
+            color: #222;
+        }
+
+        .add-box {
+            margin-top: 30px;
+        }
+
+        .add-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .add-form input,
+        .add-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .add-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        @media (max-width: 900px) {
+
+            .marketplace-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .marketplace-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .add-form {
+                grid-template-columns: 1fr;
+            }
+
+            .market-tools input,
+            .market-tools select {
+                width: 100%;
+                min-width: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 Smart Kisan
+    </a>
+
+    <nav>
+
+        <a href="dashboard.html">Dashboard</a>
+
+        <a href="market.html">Prices</a>
+
+        <a href="weather.html">Weather</a>
+
+        <button
+            class="btn btn-outline"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            DIRECT MARKET LINK
+        </div>
+
+        <h1>
+            Farmer Marketplace 🛒
+        </h1>
+
+        <p>
+            Connect farmers and buyers directly.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="market-tools">
+
+        <input
+            type="text"
+            id="searchListing"
+            placeholder="🔎 Search crop or product..."
+            onkeyup="filterListings()"
+        >
+
+
+        <select
+            id="listingFilter"
+            onchange="filterListings()"
+        >
+
+            <option value="all">
+                All Listings
+            </option>
+
+            <option value="Farmer Listing">
+                Farmer Listings
+            </option>
+
+            <option value="Buyer Request">
+                Buyer Requests
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- LISTINGS -->
+
+    <div
+        class="marketplace-grid"
+        id="listingGrid"
+    >
+
+    </div>
+
+
+    <!-- ADD LISTING -->
+
+    <div class="card add-box">
+
+        <div class="eyebrow">
+            SELL / REQUEST
+        </div>
+
+        <h2>
+            ➕ Add Marketplace Listing
+        </h2>
+
+        <p class="muted">
+            Farmers can add crop listings and buyers can post
+            requirements in this prototype.
+        </p>
+
+
+        <div class="add-form">
+
+            <div>
+
+                <label>
+                    Listing Type
+                </label>
+
+                <select id="newType">
+
+                    <option value="Farmer Listing">
+                        Farmer Listing
+                    </option>
+
+                    <option value="Buyer Request">
+                        Buyer Request
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Crop / Product
+                </label>
+
+                <input
+                    id="newCrop"
+                    type="text"
+                    placeholder="e.g. Wheat"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Price
+                </label>
+
+                <input
+                    id="newPrice"
+                    type="text"
+                    placeholder="e.g. ₹2,500 / Quintal"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    id="newQuantity"
+                    type="text"
+                    placeholder="e.g. 10 Quintal"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Location
+                </label>
+
+                <input
+                    id="newLocation"
+                    type="text"
+                    placeholder="e.g. Jaipur"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Contact Name
+                </label>
+
+                <input
+                    id="newSeller"
+                    type="text"
+                    placeholder="Name"
+                >
+
+            </div>
+
+
+            <div class="full-width">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    id="newDescription"
+                    placeholder="Write some details about the crop/product..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="full-width">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="addListing()"
+                >
+                    Add Listing
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="alert"
+        style="margin-top:25px;"
+    >
+
+        🌾 <strong>Smart Kisan Marketplace:</strong>
+        This prototype demonstrates direct farmer-buyer
+        connectivity. Future versions can connect listings
+        to the backend database and provide secure messaging
+        and verified contact features.
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+const defaultListings = [
+
+    {
+        type: "Farmer Listing",
+        crop: "Fresh Wheat",
+        price: "₹2,400 / Quintal",
+        quantity: "20 Quintal",
+        location: "Jaipur",
+        seller: "Farmer Seller",
+        description:
+            "High-quality wheat available for bulk purchase."
+    },
+
+
+    {
+        type: "Farmer Listing",
+        crop: "Mustard Seeds",
+        price: "₹5,500 / Quintal",
+        quantity: "15 Quintal",
+        location: "Jaipur",
+        seller: "Farmer Seller",
+        description:
+            "Clean mustard crop available directly from farmer."
+    },
+
+
+    {
+        type: "Buyer Request",
+        crop: "Rice",
+        price: "Negotiable",
+        quantity: "10 Quintal",
+        location: "Kota",
+        seller: "Rice Buyer",
+        description:
+            "Buyer looking for quality rice at a fair market price."
+    },
+
+
+    {
+        type: "Farmer Listing",
+        crop: "Bajra",
+        price: "₹2,100 / Quintal",
+        quantity: "12 Quintal",
+        location: "Jaipur",
+        seller: "Farmer Seller",
+        description:
+            "Fresh bajra available for local buyers."
+    },
+
+
+    {
+        type: "Buyer Request",
+        crop: "Wheat",
+        price: "₹2,450 / Quintal",
+        quantity: "25 Quintal",
+        location: "Jaipur",
+        seller: "Bulk Buyer",
+        description:
+            "Bulk wheat requirement for agricultural trading."
+    }
+
+];
+
+
+let listings = [];
+
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function loadListings() {
+
+    const saved =
+        localStorage.getItem("smartKisanListings");
+
+
+    if (saved) {
+
+        try {
+
+            listings =
+                JSON.parse(saved);
+
+        } catch (error) {
+
+            listings =
+                [...defaultListings];
+
+        }
+
+    } else {
+
+        listings =
+            [...defaultListings];
+
+    }
+
+
+    displayListings(listings);
+
+}
+
+
+function displayListings(data) {
+
+    const grid =
+        document.getElementById("listingGrid");
+
+
+    grid.innerHTML = "";
+
+
+    if (data.length === 0) {
+
+        grid.innerHTML = `
+
+            <div class="empty-message">
+
+                🔎 No matching listings found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    data.forEach((item, index) => {
+
+        const icon =
+            item.type === "Farmer Listing"
+            ? "🌾"
+            : "🛒";
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "listing-card";
+
+
+        card.innerHTML = `
+
+            <div class="listing-icon">
+                ${icon}
+            </div>
+
+
+            <span class="listing-type">
+                ${item.type}
+            </span>
+
+
+            <h3>
+                ${item.crop}
+            </h3>
+
+
+            <p>
+                ${item.description}
+            </p>
+
+
+            <div class="listing-price">
+                ${item.price}
+            </div>
+
+
+            <div class="listing-info">
+
+                <div>
+                    📦 <strong>Quantity:</strong>
+                    ${item.quantity}
+                </div>
+
+                <div>
+                    📍 <strong>Location:</strong>
+                    ${item.location}
+                </div>
+
+                <div>
+                    👤 <strong>Posted by:</strong>
+                    ${item.seller}
+                </div>
+
+            </div>
+
+
+            <button
+                class="btn btn-primary"
+                style="margin-top:15px;width:100%;"
+                onclick="contactSeller('${item.type}')"
+            >
+
+                ${
+                    item.type === "Farmer Listing"
+                    ? "📞 Contact Seller"
+                    : "🤝 Respond to Buyer"
+
+                }
+
+            </button>
+
+        `;
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function filterListings() {
+
+    const search =
+        document
+        .getElementById("searchListing")
+        .value
+        .toLowerCase();
+
+
+    const type =
+        document
+        .getElementById("listingFilter")
+        .value;
+
+
+    const filtered =
+        listings.filter(item => {
+
+            const text =
+                (
+                    item.crop +
+                    " " +
+                    item.description +
+                    " " +
+                    item.location
+                ).toLowerCase();
+
+
+            const searchMatch =
+                text.includes(search);
+
+
+            const typeMatch =
+                type === "all" ||
+                item.type === type;
+
+
+            return searchMatch && typeMatch;
+
+        });
+
+
+    displayListings(filtered);
+
+}
+
+
+function contactSeller(type) {
+
+    if (type === "Farmer Listing") {
+
+        alert(
+            "📞 Contact Seller\n\n" +
+            "Demo contact feature.\n\n" +
+            "Future version can provide secure messaging or verified contact details."
+        );
+
+    } else {
+
+        alert(
+            "🤝 Respond to Buyer\n\n" +
+            "Demo response feature.\n\n" +
+            "Future version can allow farmers to respond directly to buyer requests."
+        );
+
+    }
+
+}
+
+
+function addListing() {
+
+    const type =
+        document.getElementById("newType").value;
+
+
+    const crop =
+        document.getElementById("newCrop").value.trim();
+
+
+    const price =
+        document.getElementById("newPrice").value.trim();
+
+
+    const quantity =
+        document.getElementById("newQuantity").value.trim();
+
+
+    const location =
+        document.getElementById("newLocation").value.trim();
+
+
+    const seller =
+        document.getElementById("newSeller").value.trim();
+
+
+    const description =
+        document.getElementById("newDescription").value.trim();
+
+
+    if (
+        !crop ||
+        !price ||
+        !quantity ||
+        !location ||
+        !seller
+    ) {
+
+        alert(
+            "Please fill Crop, Price, Quantity, Location and Name."
+        );
+
+        return;
+
+    }
+
+
+    const newListing = {
+
+        type,
+        crop,
+        price,
+        quantity,
+        location,
+        seller,
+
+        description:
+            description ||
+            "Marketplace listing added by user."
+
+    };
+
+
+    listings.unshift(newListing);
+
+
+    localStorage.setItem(
+        "smartKisanListings",
+        JSON.stringify(listings)
+    );
+
+
+    document.getElementById("newCrop").value = "";
+    document.getElementById("newPrice").value = "";
+    document.getElementById("newQuantity").value = "";
+    document.getElementById("newLocation").value = "";
+    document.getElementById("newSeller").value = "";
+    document.getElementById("newDescription").value = "";
+
+
+    displayListings(listings);
+
+
+    alert(
+        "✅ Marketplace listing added successfully!"
+    );
+
+}
+
+
+loadListings();
+
+</script>
+
+
+</body>
+
+</html>

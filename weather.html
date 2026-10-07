@@ -31,21 +31,21 @@ async function loadWeather() {
 
         let user = {};
 
-        try {
+       try {
 
-            user = JSON.parse(storedUser);
+    user = JSON.parse(storedUser);
 
-        } catch (error) {
+} catch (error) {
 
-            // If localStorage contains only name
-            // e.g. "Prince Kumar"
+    // If localStorage contains only name
+    // e.g. "Prince Kumar"
 
-            user = {
-                name: storedUser,
-                location: "Jaipur"
-            };
+    user = {
+        name: storedUser,
+        location: "Jaipur"
+    };
 
-        }
+}
 
 
         /* =========================

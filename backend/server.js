@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
     res.json({
-        message: "Smart Kisan Backend is running successfully!",
+        message: "KhetNexus Backend is running successfully!",
         status: "OK"
     });
 });
@@ -108,5 +108,5 @@ app.post("/api/login", (req, res) => {
     });
 });
 app.listen(PORT, () => {
-    console.log(`Smart Kisan Backend running at http://localhost:${PORT}`);
+    console.log(`KhetNexus Backend running at http://localhost:${PORT}`);
 });

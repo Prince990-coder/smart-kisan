@@ -1,4 +1,4 @@
-SMART KISAN - COMPLETE FRONTEND DEMO
+KhetNexus - COMPLETE FRONTEND DEMO
 
 Open index.html with Live Server.
 

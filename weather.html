@@ -1,229 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Weather - Smart Kisan</title>
-
-    <link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-<header class="navbar">
-
-    <a class="logo" href="dashboard.html">
-        🌾 Smart Kisan
-    </a>
-
-    <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="market.html">Market</a>
-        <a href="schemes.html">Schemes</a>
-        <button class="btn btn-outline" onclick="logout()">
-            Logout
-        </button>
-    </nav>
-
-</header>
-
-
-<main class="container">
-
-    <div class="page-title">
-
-        <div class="eyebrow">
-            WEATHER SERVICE
-        </div>
-
-        <h1>
-            Weather Updates 🌦️
-        </h1>
-
-        <p id="locationText">
-            Loading farmer location...
-        </p>
-
-    </div>
-
-
-    <div class="alert">
-
-        🌾 <strong>Farming Alert:</strong>
-
-        Check rainfall and weather conditions before irrigation,
-        spraying pesticides or harvesting.
-
-    </div>
-
-
-    <div class="grid">
-
-        <div class="card">
-
-            <div class="icon">🌡️</div>
-
-            <h3>
-                Today's Temperature
-            </h3>
-
-            <strong id="temperature">
-                Loading...
-            </strong>
-
-            <p class="muted">
-                Current temperature
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon">💧</div>
-
-            <h3>
-                Humidity
-            </h3>
-
-            <strong id="humidity">
-                Loading...
-            </strong>
-
-            <p class="muted">
-                Current humidity
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon">💨</div>
-
-            <h3>
-                Wind Speed
-            </h3>
-
-            <strong id="wind">
-                Loading...
-            </strong>
-
-            <p class="muted">
-                Current wind speed
-            </p>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon">🌧️</div>
-
-            <h3>
-                Rain Forecast
-            </h3>
-
-            <strong id="rain">
-                Loading...
-            </strong>
-
-            <p class="muted">
-                Today's rainfall probability
-            </p>
-
-        </div>
-
-    </div>
-
-</main>
-
-
 <script>
 
-/* ================================
-   LOGOUT
-================================ */
-
 function logout() {
-
     localStorage.removeItem("smartKisanUser");
-
     window.location.href = "login.html";
-
 }
 
-
-/* ================================
-   WEATHER
-================================ */
 
 async function loadWeather() {
 
     try {
 
-        /* ----------------------------
+        /* =========================
            GET LOGGED-IN USER
-        ---------------------------- */
+        ========================= */
 
         const storedUser =
             localStorage.getItem("smartKisanUser");
 
-
         if (!storedUser) {
 
             window.location.href = "login.html";
-
             return;
 
         }
 
 
-        const user =
-            JSON.parse(storedUser);
+        /* =========================
+           HANDLE USER DATA
+        ========================= */
 
+        let user = {};
 
-        /* ----------------------------
-           GET FARMER LOCATION
-        ---------------------------- */
+        try {
 
-        let location =
-            user.location || "Jaipur";
+            user = JSON.parse(storedUser);
 
+        } catch (error) {
 
-        location =
-            String(location).trim();
+            // If localStorage contains only name
+            // e.g. "Prince Kumar"
 
-
-        if (!location) {
-
-            location = "Jaipur";
+            user = {
+                name: storedUser,
+                location: "Jaipur"
+            };
 
         }
 
 
-        document.getElementById(
-            "locationText"
-        ).textContent =
-            "Weather information for " +
-            location;
+        /* =========================
+           GET LOCATION
+        ========================= */
+
+        let location =
+            user.location || "Jaipur";
+
+        location =
+            String(location).trim();
+
+        if (!location) {
+            location = "Jaipur";
+        }
 
 
-        /* ----------------------------
+        document.getElementById("locationText").textContent =
+            "Weather information for " + location;
+
+
+        /* =========================
            DEFAULT JAIPUR COORDINATES
-           Used if location search fails
-        ---------------------------- */
+        ========================= */
 
         let latitude = 26.9124;
-
         let longitude = 75.7873;
 
 
-        /* ----------------------------
-           FIND LOCATION
-        ---------------------------- */
+        /* =========================
+           LOCATION SEARCH
+        ========================= */
 
         try {
 
@@ -261,9 +115,7 @@ async function loadWeather() {
 
             }
 
-        }
-
-        catch (geoError) {
+        } catch (geoError) {
 
             console.warn(
                 "Location search failed. Using Jaipur.",
@@ -273,22 +125,16 @@ async function loadWeather() {
         }
 
 
-        /* ----------------------------
+        /* =========================
            WEATHER API
-        ---------------------------- */
+        ========================= */
 
         const weatherUrl =
             "https://api.open-meteo.com/v1/forecast" +
-            "?latitude=" +
-            latitude +
-            "&longitude=" +
-            longitude +
-            "&current=" +
-            "temperature_2m," +
-            "relative_humidity_2m," +
-            "wind_speed_10m" +
-            "&daily=" +
-            "precipitation_probability_max" +
+            "?latitude=" + latitude +
+            "&longitude=" + longitude +
+            "&current=temperature_2m,relative_humidity_2m,wind_speed_10m" +
+            "&daily=precipitation_probability_max" +
             "&timezone=auto";
 
 
@@ -299,7 +145,7 @@ async function loadWeather() {
         if (!weatherResponse.ok) {
 
             throw new Error(
-                "Weather API request failed: " +
+                "Weather API failed: " +
                 weatherResponse.status
             );
 
@@ -310,17 +156,13 @@ async function loadWeather() {
             await weatherResponse.json();
 
 
-        /* ----------------------------
-           CHECK WEATHER DATA
-        ---------------------------- */
-
         if (
             !weatherData.current ||
             !weatherData.daily
         ) {
 
             throw new Error(
-                "Invalid weather data received"
+                "Invalid weather data"
             );
 
         }
@@ -330,81 +172,44 @@ async function loadWeather() {
             weatherData.current;
 
 
-        /* ----------------------------
+        /* =========================
            TEMPERATURE
-        ---------------------------- */
+        ========================= */
 
-        if (
-            current.temperature_2m !== undefined
-        ) {
-
-            document.getElementById(
-                "temperature"
-            ).textContent =
-                current.temperature_2m +
-                "°C";
-
-        }
+        document.getElementById("temperature")
+            .textContent =
+            current.temperature_2m + "°C";
 
 
-        /* ----------------------------
+        /* =========================
            HUMIDITY
-        ---------------------------- */
+        ========================= */
 
-        if (
-            current.relative_humidity_2m !== undefined
-        ) {
-
-            document.getElementById(
-                "humidity"
-            ).textContent =
-                current.relative_humidity_2m +
-                "%";
-
-        }
+        document.getElementById("humidity")
+            .textContent =
+            current.relative_humidity_2m + "%";
 
 
-        /* ----------------------------
+        /* =========================
            WIND
-        ---------------------------- */
+        ========================= */
 
-        if (
-            current.wind_speed_10m !== undefined
-        ) {
-
-            document.getElementById(
-                "wind"
-            ).textContent =
-                current.wind_speed_10m +
-                " km/h";
-
-        }
+        document.getElementById("wind")
+            .textContent =
+            current.wind_speed_10m + " km/h";
 
 
-        /* ----------------------------
+        /* =========================
            RAIN
-        ---------------------------- */
+        ========================= */
 
-        if (
+        document.getElementById("rain")
+            .textContent =
             weatherData.daily
-                .precipitation_probability_max &&
-            weatherData.daily
-                .precipitation_probability_max.length > 0
-        ) {
-
-            document.getElementById(
-                "rain"
-            ).textContent =
-                weatherData.daily
-                    .precipitation_probability_max[0] +
-                "%";
-
-        }
+                .precipitation_probability_max[0] + "%";
 
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Weather error:",
@@ -412,48 +217,31 @@ async function loadWeather() {
         );
 
 
-        document.getElementById(
-            "locationText"
-        ).textContent =
+        document.getElementById("locationText")
+            .textContent =
             "Weather service temporarily unavailable.";
 
 
-        document.getElementById(
-            "temperature"
-        ).textContent =
-            "--";
+        document.getElementById("temperature")
+            .textContent = "--";
 
 
-        document.getElementById(
-            "humidity"
-        ).textContent =
-            "--";
+        document.getElementById("humidity")
+            .textContent = "--";
 
 
-        document.getElementById(
-            "wind"
-        ).textContent =
-            "--";
+        document.getElementById("wind")
+            .textContent = "--";
 
 
-        document.getElementById(
-            "rain"
-        ).textContent =
-            "--";
+        document.getElementById("rain")
+            .textContent = "--";
 
     }
 
 }
 
 
-/* ================================
-   START WEATHER
-================================ */
-
 loadWeather();
 
 </script>
-
-</body>
-
-</html>

@@ -38,7 +38,7 @@
             padding: 22px;
             border-radius: 14px;
             border: 1px solid #e1e8e2;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
         }
 
         .price-card .icon {
@@ -133,6 +133,7 @@
     <div class="market-summary">
 
         <div class="price-card">
+
             <div class="icon">🌾</div>
 
             <small>Your Crop</small>
@@ -140,10 +141,12 @@
             <strong id="farmerCrop">
                 Loading...
             </strong>
+
         </div>
 
 
         <div class="price-card">
+
             <div class="icon">💰</div>
 
             <small>Highest Price</small>
@@ -153,10 +156,12 @@
             </strong>
 
             <small>per Quintal</small>
+
         </div>
 
 
         <div class="price-card">
+
             <div class="icon">🏪</div>
 
             <small>Markets Available</small>
@@ -166,6 +171,7 @@
             </strong>
 
             <small>market listings</small>
+
         </div>
 
     </div>
@@ -182,7 +188,10 @@
             onkeyup="filterMarket()"
         >
 
-        <select id="marketFilter" onchange="filterMarket()">
+        <select
+            id="marketFilter"
+            onchange="filterMarket()"
+        >
 
             <option value="all">
                 All Markets
@@ -234,13 +243,17 @@
 
 
     <p class="updated">
-        🕐 Last updated: <span id="updatedTime"></span>
+
+        🕐 Last updated:
+        <span id="updatedTime"></span>
+
     </p>
 
 
     <div class="alert" style="margin-top:20px">
 
         🌾 <strong>Farmer Tip:</strong>
+
         Compare prices from different markets before selling your crop.
         Transportation cost should also be considered.
 
@@ -250,6 +263,7 @@
     <div class="alert danger" style="margin-top:15px">
 
         ℹ️ <strong>Prototype Notice:</strong>
+
         The prices shown here are sample project data.
         The final version can connect this module to a verified
         mandi/market-price data source.
@@ -260,6 +274,10 @@
 
 
 <script>
+
+/* ================================
+   MARKET DATA
+================================ */
 
 const marketData = [
 
@@ -314,8 +332,16 @@ const marketData = [
 ];
 
 
+/* ================================
+   FARMER CROP
+================================ */
+
 let farmerCrop = "";
 
+
+/* ================================
+   LOGOUT
+================================ */
 
 function logout() {
 
@@ -326,10 +352,17 @@ function logout() {
 }
 
 
+/* ================================
+   LOAD FARMER
+================================ */
+
 function loadFarmer() {
 
     const storedUser =
         localStorage.getItem("smartKisanUser");
+
+
+    /* User login nahi hai */
 
     if (!storedUser) {
 
@@ -342,40 +375,72 @@ function loadFarmer() {
 
     try {
 
-        const user = JSON.parse(storedUser);
+        const user =
+            JSON.parse(storedUser);
 
-        farmerCrop = user.crop || "Wheat";
 
-        document.getElementById("farmerCrop").textContent =
-            farmerCrop;
+        /* Farmer ka crop */
 
-        document.getElementById("farmerInfo").textContent =
-            "Market prices for " + farmerCrop +
-            " and other major crops.";
+        farmerCrop =
+            user.crop || "Wheat";
+
 
     }
 
     catch (error) {
 
+        console.error(
+            "Farmer data error:",
+            error
+        );
+
+
         farmerCrop = "Wheat";
 
     }
 
+
+    /* Crop card update */
+
+    document.getElementById(
+        "farmerCrop"
+    ).textContent = farmerCrop;
+
+
+    /* Information text update */
+
+    document.getElementById(
+        "farmerInfo"
+    ).textContent =
+        "Market prices for " +
+        farmerCrop +
+        " and other major crops.";
+
 }
 
+
+/* ================================
+   DISPLAY MARKET
+================================ */
 
 function displayMarket(data) {
 
     const table =
-        document.getElementById("marketTable");
+        document.getElementById(
+            "marketTable"
+        );
+
 
     table.innerHTML = "";
 
 
     data.forEach(item => {
 
+
         const average =
-            Math.round((item.min + item.max) / 2);
+            Math.round(
+                (item.min + item.max) / 2
+            );
 
 
         const isFarmerCrop =
@@ -389,7 +454,9 @@ function displayMarket(data) {
 
         if (isFarmerCrop) {
 
-            row.classList.add("highlight-row");
+            row.classList.add(
+                "highlight-row"
+            );
 
         }
 
@@ -397,6 +464,7 @@ function displayMarket(data) {
         row.innerHTML = `
 
             <td>
+
                 ${item.crop}
 
                 ${
@@ -440,26 +508,56 @@ function displayMarket(data) {
 }
 
 
+/* ================================
+   UPDATE SUMMARY
+================================ */
+
 function updateSummary(data) {
 
-    document.getElementById("marketCount").textContent =
+
+    document.getElementById(
+        "marketCount"
+    ).textContent =
         data.length;
 
 
     if (data.length > 0) {
 
-        const highest =
-            Math.max(...data.map(item => item.max));
 
-        document.getElementById("highestPrice").textContent =
-            "₹" + highest.toLocaleString("en-IN");
+        const highest =
+            Math.max(
+                ...data.map(
+                    item => item.max
+                )
+            );
+
+
+        document.getElementById(
+            "highestPrice"
+        ).textContent =
+            "₹" +
+            highest.toLocaleString("en-IN");
+
+    }
+
+    else {
+
+        document.getElementById(
+            "highestPrice"
+        ).textContent =
+            "₹0";
 
     }
 
 }
 
 
+/* ================================
+   FILTER MARKET
+================================ */
+
 function filterMarket() {
+
 
     const search =
         document
@@ -477,6 +575,7 @@ function filterMarket() {
     const filtered =
         marketData.filter(item => {
 
+
             const cropMatch =
                 item.crop
                 .toLowerCase()
@@ -488,7 +587,8 @@ function filterMarket() {
                 item.market === selectedMarket;
 
 
-            return cropMatch && marketMatch;
+            return cropMatch &&
+                   marketMatch;
 
         });
 
@@ -498,12 +598,22 @@ function filterMarket() {
 }
 
 
+/* ================================
+   PAGE LOAD
+================================ */
+
 loadFarmer();
 
 displayMarket(marketData);
 
 
-document.getElementById("updatedTime").textContent =
+/* ================================
+   UPDATED TIME
+================================ */
+
+document.getElementById(
+    "updatedTime"
+).textContent =
     new Date().toLocaleString("en-IN");
 
 </script>

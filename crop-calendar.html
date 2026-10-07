@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crop Calendar - KhetNexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .calendar-form {
+            max-width: 700px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .calendar-grid {
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="market.html">Market</a>
+        <a href="marketplace.html">Marketplace</a>
+
+        <button class="btn btn-outline" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMING PLANNER
+        </div>
+
+        <h1>
+            Crop Calendar 🌾
+        </h1>
+
+        <p>
+            View basic crop growth stages and farming activities.
+        </p>
+
+    </div>
+
+
+    <div class="card calendar-form">
+
+        <h2>Select Crop</h2>
+
+        <div class="form-group">
+
+            <label for="crop">
+                Crop
+            </label>
+
+            <select id="crop" onchange="showCalendar()">
+
+                <option value="">
+                    Select Crop
+                </option>
+
+                <option value="wheat">
+                    Wheat
+                </option>
+
+                <option value="rice">
+                    Rice
+                </option>
+
+                <option value="mustard">
+                    Mustard
+                </option>
+
+                <option value="maize">
+                    Maize
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="grid calendar-grid"
+        id="calendarSection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <div class="icon">🌱</div>
+
+            <h3>
+                Sowing
+            </h3>
+
+            <strong id="sowing">
+                -
+            </strong>
+
+            <p class="muted">
+                Recommended sowing period
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">💧</div>
+
+            <h3>
+                Irrigation
+            </h3>
+
+            <strong id="irrigation">
+                -
+            </strong>
+
+            <p class="muted">
+                Basic irrigation guidance
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🌿</div>
+
+            <h3>
+                Growth
+            </h3>
+
+            <strong id="growth">
+                -
+            </strong>
+
+            <p class="muted">
+                Main crop growth stage
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🌾</div>
+
+            <h3>
+                Harvest
+            </h3>
+
+            <strong id="harvest">
+                -
+            </strong>
+
+            <p class="muted">
+                Approximate harvest period
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="alert"
+        id="calendarNote"
+        style="display:none; margin-top:24px;"
+    >
+        ⚠️ Crop timing can vary depending on region,
+        weather, soil conditions and farming practices.
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function showCalendar() {
+
+    const crop =
+        document.getElementById("crop").value;
+
+
+    if (!crop) {
+
+        document.getElementById("calendarSection")
+            .style.display = "none";
+
+        document.getElementById("calendarNote")
+            .style.display = "none";
+
+        return;
+
+    }
+
+
+    const calendar = {
+
+        wheat: {
+            sowing: "October - November",
+            irrigation: "At key growth stages",
+            growth: "December - February",
+            harvest: "March - April"
+        },
+
+        rice: {
+            sowing: "June - July",
+            irrigation: "Maintain suitable water",
+            growth: "July - September",
+            harvest: "October - November"
+        },
+
+        mustard: {
+            sowing: "October - November",
+            irrigation: "At important growth stages",
+            growth: "December - January",
+            harvest: "February - March"
+        },
+
+        maize: {
+            sowing: "June - July",
+            irrigation: "Regular according to conditions",
+            growth: "July - September",
+            harvest: "September - October"
+        }
+
+    };
+
+
+    const data =
+        calendar[crop];
+
+
+    document.getElementById("sowing")
+        .textContent = data.sowing;
+
+
+    document.getElementById("irrigation")
+        .textContent = data.irrigation;
+
+
+    document.getElementById("growth")
+        .textContent = data.growth;
+
+
+    document.getElementById("harvest")
+        .textContent = data.harvest;
+
+
+    document.getElementById("calendarSection")
+        .style.display = "grid";
+
+
+    document.getElementById("calendarNote")
+        .style.display = "block";
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nearby Mandi - KhetNexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .mandi-form {
+            max-width: 700px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .mandi-results {
+            margin-top: 24px;
+        }
+
+        .mandi-card {
+            margin-bottom: 16px;
+        }
+
+        .mandi-card h3 {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="market.html">Market</a>
+        <a href="marketplace.html">Marketplace</a>
+
+        <button class="btn btn-outline" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            MARKET ACCESS
+        </div>
+
+        <h1>
+            Nearby Mandi 📍
+        </h1>
+
+        <p>
+            Find mandi information based on your selected city.
+        </p>
+
+    </div>
+
+
+    <div class="card mandi-form">
+
+        <h2>Select Location</h2>
+
+        <div class="form-group">
+
+            <label for="city">
+                City
+            </label>
+
+            <select id="city" onchange="showMandis()">
+
+                <option value="">
+                    Select City
+                </option>
+
+                <option value="jaipur">
+                    Jaipur
+                </option>
+
+                <option value="ajmer">
+                    Ajmer
+                </option>
+
+                <option value="kota">
+                    Kota
+                </option>
+
+                <option value="jodhpur">
+                    Jodhpur
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="mandi-results"
+        id="mandiResults"
+        style="display:none;"
+    ></div>
+
+
+    <div
+        class="alert"
+        id="mandiNote"
+        style="display:none; margin-top:24px;"
+    >
+        ⚠️ Mandi names and information shown here are
+        project/demo data. Verify current mandi availability
+        and prices before visiting or selling produce.
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function showMandis() {
+
+    const city =
+        document.getElementById("city").value;
+
+    const results =
+        document.getElementById("mandiResults");
+
+
+    if (!city) {
+
+        results.style.display = "none";
+
+        document.getElementById("mandiNote")
+            .style.display = "none";
+
+        return;
+
+    }
+
+
+    const mandiData = {
+
+        jaipur: [
+            {
+                name: "Muhana Mandi",
+                location: "Jaipur",
+                crops: "Wheat, Mustard, Vegetables"
+            },
+            {
+                name: "Jaipur Grain Market",
+                location: "Jaipur",
+                crops: "Wheat, Maize, Pulses"
+            }
+        ],
+
+        ajmer: [
+            {
+                name: "Ajmer Mandi",
+                location: "Ajmer",
+                crops: "Wheat, Mustard, Pulses"
+            },
+            {
+                name: "Kishangarh Mandi",
+                location: "Kishangarh",
+                crops: "Grains, Vegetables"
+            }
+        ],
+
+        kota: [
+            {
+                name: "Kota Mandi",
+                location: "Kota",
+                crops: "Wheat, Soybean, Mustard"
+            },
+            {
+                name: "Bhawani Mandi",
+                location: "Jhalawar",
+                crops: "Soybean, Wheat, Garlic"
+            }
+        ],
+
+        jodhpur: [
+            {
+                name: "Jodhpur Mandi",
+                location: "Jodhpur",
+                crops: "Wheat, Bajra, Mustard"
+            },
+            {
+                name: "Bhagat Ki Kothi Mandi",
+                location: "Jodhpur",
+                crops: "Grains, Pulses"
+            }
+        ]
+
+    };
+
+
+    const mandis =
+        mandiData[city];
+
+
+    results.innerHTML = "";
+
+
+    mandis.forEach(function(mandi) {
+
+        results.innerHTML += `
+
+            <div class="card mandi-card">
+
+                <div class="icon">
+                    🏪
+                </div>
+
+                <h3>
+                    ${mandi.name}
+                </h3>
+
+                <p>
+                    📍 ${mandi.location}
+                </p>
+
+                <p>
+                    🌾 Crops:
+                    <strong>${mandi.crops}</strong>
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+
+    results.style.display = "block";
+
+
+    document.getElementById("mandiNote")
+        .style.display = "block";
+
+}
+
+</script>
+
+</body>
+
+</html>

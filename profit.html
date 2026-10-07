@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Profit Tracker - KhetNexus</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <style>
+        .profit-form {
+            max-width: 700px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .result-grid {
+            margin-top: 24px;
+        }
+
+        .profit-status {
+            margin-top: 24px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo"
+       href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="weather.html">
+            Weather
+        </a>
+
+        <a href="market.html">
+            Market
+        </a>
+
+        <a href="marketplace.html">
+            Marketplace
+        </a>
+
+        <button class="btn btn-outline"
+                onclick="logout()">
+            Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMING FINANCE
+        </div>
+
+        <h1>
+            Expense & Profit Tracker 💰
+        </h1>
+
+        <p>
+            Calculate your estimated farming profit or loss.
+        </p>
+
+    </div>
+
+
+    <!-- INPUT FORM -->
+
+    <div class="card profit-form">
+
+        <h2>
+            Enter Farming Details
+        </h2>
+
+
+        <div class="form-group">
+
+            <label for="crop">
+                Crop
+            </label>
+
+            <input
+                type="text"
+                id="crop"
+                placeholder="Example: Wheat"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="expense">
+                Total Expense (₹)
+            </label>
+
+            <input
+                type="number"
+                id="expense"
+                placeholder="Example: 25000"
+                min="0"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="quantity">
+                Production Quantity (Quintal)
+            </label>
+
+            <input
+                type="number"
+                id="quantity"
+                placeholder="Example: 20"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="price">
+                Selling Price (₹ per Quintal)
+            </label>
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Example: 2450"
+                min="0"
+                step="0.01"
+            >
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="calculateProfit()">
+
+            Calculate Profit
+
+        </button>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div
+        class="grid result-grid"
+        id="resultSection"
+        style="display:none;"
+    >
+
+
+        <div class="card">
+
+            <div class="icon">
+                🌾
+            </div>
+
+            <h3>
+                Crop
+            </h3>
+
+            <strong id="resultCrop">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                💰
+            </div>
+
+            <h3>
+                Total Revenue
+            </h3>
+
+            <strong id="revenue">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                💸
+            </div>
+
+            <h3>
+                Total Expense
+            </h3>
+
+            <strong id="resultExpense">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                📊
+            </div>
+
+            <h3>
+                Profit / Loss
+            </h3>
+
+            <strong id="profit">
+                ₹0
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div
+        class="alert profit-status"
+        id="statusMessage"
+        style="display:none;"
+    ></div>
+
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function calculateProfit() {
+
+    const crop =
+        document.getElementById("crop").value.trim();
+
+    const expense =
+        Number(document.getElementById("expense").value);
+
+    const quantity =
+        Number(document.getElementById("quantity").value);
+
+    const price =
+        Number(document.getElementById("price").value);
+
+
+    /* VALIDATION */
+
+    if (!crop) {
+
+        alert("Please enter crop name.");
+
+        return;
+
+    }
+
+
+    if (
+        isNaN(expense) ||
+        expense < 0
+    ) {
+
+        alert("Please enter a valid expense.");
+
+        return;
+
+    }
+
+
+    if (
+        isNaN(quantity) ||
+        quantity <= 0
+    ) {
+
+        alert("Please enter a valid production quantity.");
+
+        return;
+
+    }
+
+
+    if (
+        isNaN(price) ||
+        price <= 0
+    ) {
+
+        alert("Please enter a valid selling price.");
+
+        return;
+
+    }
+
+
+    /* CALCULATION */
+
+    const revenue =
+        quantity * price;
+
+    const profit =
+        revenue - expense;
+
+
+    /* SHOW RESULTS */
+
+    document.getElementById("resultCrop")
+        .textContent = crop;
+
+
+    document.getElementById("revenue")
+        .textContent =
+        "₹" + revenue.toLocaleString("en-IN");
+
+
+    document.getElementById("resultExpense")
+        .textContent =
+        "₹" + expense.toLocaleString("en-IN");
+
+
+    document.getElementById("profit")
+        .textContent =
+        "₹" + profit.toLocaleString("en-IN");
+
+
+    document.getElementById("resultSection")
+        .style.display = "grid";
+
+
+    /* STATUS */
+
+    const status =
+        document.getElementById("statusMessage");
+
+
+    status.style.display = "block";
+
+
+    if (profit > 0) {
+
+        status.innerHTML =
+            "📈 <strong>Profit:</strong> " +
+            "Your estimated profit is ₹" +
+            profit.toLocaleString("en-IN") +
+            ".";
+
+    }
+
+    else if (profit < 0) {
+
+        status.innerHTML =
+            "📉 <strong>Loss:</strong> " +
+            "Your estimated loss is ₹" +
+            Math.abs(profit).toLocaleString("en-IN") +
+            ".";
+
+    }
+
+    else {
+
+        status.innerHTML =
+            "⚖️ <strong>Break-even:</strong> " +
+            "Your revenue and expense are equal.";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

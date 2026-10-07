@@ -1,125 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Farmer Dashboard - KhetNexus</title>
-    <link rel="stylesheet" href="css/style.css">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Farmer Dashboard - KhetNexus</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
 </head>
+
 
 <body onload="requireLogin()">
 
+
 <header class="navbar">
-    <a class="logo" href="dashboard.html">🌾 KhetNexus</a>
+
+    <a class="logo"
+       href="dashboard.html">
+
+        🌾 KhetNexus
+
+    </a>
+
 
     <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="index.html">Home</a>
-        <button class="btn btn-outline" onclick="logout()">Logout</button>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <button
+            class="btn btn-outline"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
     </nav>
+
 </header>
 
+
+
 <main class="dashboard">
+
     <div class="container">
 
+
+        <!-- =========================
+             WELCOME
+        ========================== -->
+
         <div class="welcome">
+
             <div>
-                <div class="eyebrow">FARMER DASHBOARD</div>
-                <h1>Welcome, <span data-user>Farmer</span> 👋</h1>
-                <p class="muted">Your farming services in one place.</p>
+
+                <div class="eyebrow">
+                    FARMER DASHBOARD
+                </div>
+
+
+                <h1>
+
+                    Welcome,
+                    <span data-user>
+                        Farmer
+                    </span>
+
+                    👋
+
+                </h1>
+
+
+                <p class="muted">
+                    Your farming services in one place.
+                </p>
+
             </div>
 
-            <span class="tag">Demo Portal</span>
+
+            <span class="tag">
+                Demo Portal
+            </span>
+
         </div>
 
-        <!-- Dashboard Stats -->
+
+
+        <!-- =========================
+             DASHBOARD STATS
+        ========================== -->
+
         <div class="stat-grid">
 
+
             <div class="stat">
+
                 🌡️
-                <strong>28°C</strong>
-                <small>Today's Weather</small>
+
+                <strong>
+                    28°C
+                </strong>
+
+                <small>
+                    Today's Weather
+                </small>
+
             </div>
 
+
+
             <div class="stat">
+
                 💧
-                <strong>62%</strong>
-                <small>Humidity</small>
+
+                <strong>
+                    62%
+                </strong>
+
+                <small>
+                    Humidity
+                </small>
+
             </div>
 
+
+
             <div class="stat">
+
                 🌾
-                <strong>₹2,450</strong>
-                <small>Sample Wheat Price</small>
+
+                <strong>
+                    ₹2,450
+                </strong>
+
+                <small>
+                    Sample Wheat Price
+                </small>
+
             </div>
 
+
+
             <div class="stat">
+
                 📢
-                <strong>3</strong>
-                <small>Useful Alerts</small>
+
+                <strong>
+                    3
+                </strong>
+
+                <small>
+                    Useful Alerts
+                </small>
+
             </div>
+
 
         </div>
 
-        <!-- Main Features -->
+
+
+        <!-- =========================
+             MAIN FEATURES
+        ========================== -->
+
         <div class="grid">
 
-            <div class="card">
-                <div class="icon">🌦️</div>
-                <h3>Weather</h3>
-                <p>Weather forecast and farming alerts.</p>
-                <a class="card-link" href="weather.html">Open →</a>
-            </div>
+
+            <!-- WEATHER -->
 
             <div class="card">
-                <div class="icon">💰</div>
-                <h3>Market Prices</h3>
-                <p>Compare sample mandi prices.</p>
-                <a class="card-link" href="market.html">Open →</a>
+
+                <div class="icon">
+                    🌦️
+                </div>
+
+                <h3>
+                    Weather
+                </h3>
+
+                <p>
+                    Weather forecast and farming alerts.
+                </p>
+
+                <a class="card-link"
+                   href="weather.html">
+
+                    Open →
+
+                </a>
+
             </div>
 
-            <div class="card">
-                <div class="icon">🦠</div>
-                <h3>Crop Doctor</h3>
-                <p>Upload crop image for a demo assessment.</p>
-                <a class="card-link" href="disease.html">Open →</a>
-            </div>
+
+
+            <!-- MARKET PRICES -->
 
             <div class="card">
-                <div class="icon">📢</div>
-                <h3>Schemes</h3>
-                <p>Explore agricultural support information.</p>
-                <a class="card-link" href="schemes.html">Open →</a>
+
+                <div class="icon">
+                    💰
+                </div>
+
+                <h3>
+                    Market Prices
+                </h3>
+
+                <p>
+                    Compare sample mandi prices.
+                </p>
+
+                <a class="card-link"
+                   href="market.html">
+
+                    Open →
+
+                </a>
+
             </div>
 
-            <div class="card">
-                <div class="icon">🛒</div>
-                <h3>Marketplace</h3>
-                <p>Browse products and buyer listings.</p>
-                <a class="card-link" href="marketplace.html">Open →</a>
-            </div>
+
+
+            <!-- CROP DOCTOR -->
 
             <div class="card">
-                <div class="icon">👨‍🌾</div>
-                <h3>Expert Advice</h3>
-                <p>Read and submit farming questions.</p>
-                <a class="card-link" href="expert.html">Open →</a>
+
+                <div class="icon">
+                    🦠
+                </div>
+
+                <h3>
+                    Crop Doctor
+                </h3>
+
+                <p>
+                    Upload crop image for a demo assessment.
+                </p>
+
+                <a class="card-link"
+                   href="disease.html">
+
+                    Open →
+
+                </a>
+
             </div>
 
-            <!-- Community -->
+
+
+            <!-- GOVERNMENT SCHEMES -->
+
             <div class="card">
-                <div class="icon">👥</div>
-                <h3>Community</h3>
-                <p>Connect with farmers and discuss farming topics.</p>
-                <a class="card-link" href="community.html">Open →</a>
+
+                <div class="icon">
+                    📢
+                </div>
+
+                <h3>
+                    Schemes
+                </h3>
+
+                <p>
+                    Explore agricultural support information.
+                </p>
+
+                <a class="card-link"
+                   href="schemes.html">
+
+                    Open →
+
+                </a>
+
             </div>
+
+
+
+            <!-- MARKETPLACE -->
+
+            <div class="card">
+
+                <div class="icon">
+                    🛒
+                </div>
+
+                <h3>
+                    Marketplace
+                </h3>
+
+                <p>
+                    Browse products and buyer listings.
+                </p>
+
+                <a class="card-link"
+                   href="marketplace.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- EXPERT ADVICE -->
+
+            <div class="card">
+
+                <div class="icon">
+                    👨‍🌾
+                </div>
+
+                <h3>
+                    Expert Advice
+                </h3>
+
+                <p>
+                    Read and submit farming questions.
+                </p>
+
+                <a class="card-link"
+                   href="expert.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- COMMUNITY -->
+
+            <div class="card">
+
+                <div class="icon">
+                    👥
+                </div>
+
+                <h3>
+                    Community
+                </h3>
+
+                <p>
+                    Connect with farmers and discuss farming topics.
+                </p>
+
+                <a class="card-link"
+                   href="community.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- PROFIT TRACKER -->
+
+            <div class="card">
+
+                <div class="icon">
+                    💰
+                </div>
+
+                <h3>
+                    Profit Tracker
+                </h3>
+
+                <p>
+                    Calculate farming expenses, revenue and profit.
+                </p>
+
+                <a class="card-link"
+                   href="profit.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- FERTILIZER CALCULATOR -->
+
+            <div class="card">
+
+                <div class="icon">
+                    🧮
+                </div>
+
+                <h3>
+                    Fertilizer Calculator
+                </h3>
+
+                <p>
+                    Estimate fertilizer requirements for your crop.
+                </p>
+
+                <a class="card-link"
+                   href="fertilizer.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- CROP CALENDAR -->
+
+            <div class="card">
+
+                <div class="icon">
+                    📅
+                </div>
+
+                <h3>
+                    Crop Calendar
+                </h3>
+
+                <p>
+                    View crop growth and farming stages.
+                </p>
+
+                <a class="card-link"
+                   href="crop-calendar.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- SCHEME ELIGIBILITY -->
+
+            <div class="card">
+
+                <div class="icon">
+                    🏛️
+                </div>
+
+                <h3>
+                    Scheme Eligibility
+                </h3>
+
+                <p>
+                    Check relevant agricultural schemes.
+                </p>
+
+                <a class="card-link"
+                   href="scheme-eligibility.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- FARM SUMMARY -->
+
+            <div class="card">
+
+                <div class="icon">
+                    📊
+                </div>
+
+                <h3>
+                    Farm Summary
+                </h3>
+
+                <p>
+                    View your farming expense and profit summary.
+                </p>
+
+                <a class="card-link"
+                   href="farm-summary.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- NEARBY MANDI -->
+
+            <div class="card">
+
+                <div class="icon">
+                    📍
+                </div>
+
+                <h3>
+                    Nearby Mandi
+                </h3>
+
+                <p>
+                    Find mandi information by location.
+                </p>
+
+                <a class="card-link"
+                   href="nearby-mandi.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
+
+
+            <!-- FARMER ALERTS -->
+
+            <div class="card">
+
+                <div class="icon">
+                    🔔
+                </div>
+
+                <h3>
+                    Farmer Alerts
+                </h3>
+
+                <p>
+                    View useful farming alerts and reminders.
+                </p>
+
+                <a class="card-link"
+                   href="alerts.html">
+
+                    Open →
+
+                </a>
+
+            </div>
+
 
         </div>
 
+
     </div>
+
 </main>
+
+
 
 <script src="js/app.js"></script>
 
+
 </body>
+
 </html>

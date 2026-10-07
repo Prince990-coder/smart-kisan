@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farmer Alerts - KhetNexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .alerts-list {
+            margin-top: 24px;
+        }
+
+        .alert-card {
+            margin-bottom: 16px;
+        }
+
+        .alert-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .alert-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="market.html">Market</a>
+        <a href="marketplace.html">Marketplace</a>
+
+        <button class="btn btn-outline" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMER NOTIFICATIONS
+        </div>
+
+        <h1>
+            Farmer Alerts 🔔
+        </h1>
+
+        <p>
+            Useful farming alerts and reminders in one place.
+        </p>
+
+    </div>
+
+
+    <div
+        class="alerts-list"
+        id="alertsList">
+    </div>
+
+
+    <div class="alert" style="margin-top:24px;">
+
+        ⚠️
+        <strong>Important:</strong>
+
+        These alerts are project/demo notifications.
+        Always verify weather, market prices and agricultural
+        recommendations before taking action.
+
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+const alerts = [
+
+    {
+        icon: "🌧️",
+        title: "Weather Alert",
+        message:
+            "Check rainfall conditions before irrigation or pesticide spraying.",
+        type: "Weather"
+    },
+
+    {
+        icon: "💰",
+        title: "Market Price Reminder",
+        message:
+            "Compare current mandi prices before selling your crop.",
+        type: "Market"
+    },
+
+    {
+        icon: "🌾",
+        title: "Crop Monitoring",
+        message:
+            "Regularly inspect your crop for pests, diseases and unusual leaf changes.",
+        type: "Crop Health"
+    },
+
+    {
+        icon: "🏛️",
+        title: "Government Scheme Reminder",
+        message:
+            "Check available agricultural schemes and verify eligibility requirements.",
+        type: "Government Scheme"
+    },
+
+    {
+        icon: "💧",
+        title: "Irrigation Reminder",
+        message:
+            "Consider soil moisture and weather conditions before irrigation.",
+        type: "Farming"
+    }
+
+];
+
+
+function loadAlerts() {
+
+    const container =
+        document.getElementById("alertsList");
+
+    container.innerHTML = "";
+
+
+    alerts.forEach(function(alert) {
+
+        container.innerHTML += `
+
+            <div class="card alert-card">
+
+                <div class="icon">
+                    ${alert.icon}
+                </div>
+
+                <h3>
+                    ${alert.title}
+                </h3>
+
+                <div class="alert-meta">
+                    ${alert.type}
+                </div>
+
+                <p>
+                    ${alert.message}
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+loadAlerts();
+
+</script>
+
+</body>
+
+</html>

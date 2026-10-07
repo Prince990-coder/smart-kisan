@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scheme Eligibility - KhetNexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .eligibility-form {
+            max-width: 700px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .result-section {
+            margin-top: 24px;
+        }
+
+        .scheme-item {
+            margin-bottom: 16px;
+        }
+
+        .scheme-item h3 {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="market.html">Market</a>
+        <a href="marketplace.html">Marketplace</a>
+
+        <button class="btn btn-outline" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMER SUPPORT
+        </div>
+
+        <h1>
+            Scheme Eligibility Checker 🏛️
+        </h1>
+
+        <p>
+            Check which agricultural support schemes may be relevant
+            to your basic farmer profile.
+        </p>
+
+    </div>
+
+
+    <div class="card eligibility-form">
+
+        <h2>Enter Farmer Details</h2>
+
+
+        <div class="form-group">
+
+            <label for="farmerType">
+                Are you a farmer?
+            </label>
+
+            <select id="farmerType">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option value="yes">
+                    Yes
+                </option>
+
+                <option value="no">
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="land">
+                Do you own or cultivate agricultural land?
+            </label>
+
+            <select id="land">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option value="yes">
+                    Yes
+                </option>
+
+                <option value="no">
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="crop">
+                Main Crop
+            </label>
+
+            <select id="crop">
+
+                <option value="">
+                    Select Crop
+                </option>
+
+                <option value="wheat">
+                    Wheat
+                </option>
+
+                <option value="rice">
+                    Rice
+                </option>
+
+                <option value="mustard">
+                    Mustard
+                </option>
+
+                <option value="maize">
+                    Maize
+                </option>
+
+                <option value="other">
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="insurance">
+                Do you want crop insurance information?
+            </label>
+
+            <select id="insurance">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option value="yes">
+                    Yes
+                </option>
+
+                <option value="no">
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="checkEligibility()">
+
+            Check Eligibility
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="card result-section"
+        id="resultSection"
+        style="display:none;"
+    >
+
+        <h2>
+            Relevant Schemes
+        </h2>
+
+        <div id="schemeResults"></div>
+
+    </div>
+
+
+    <div
+        class="alert"
+        id="schemeNote"
+        style="display:none; margin-top:24px;"
+    >
+        ⚠️ This is a project-level eligibility guide.
+        Actual eligibility, benefits and application requirements
+        should be verified on the official government portal.
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function checkEligibility() {
+
+    const farmerType =
+        document.getElementById("farmerType").value;
+
+    const land =
+        document.getElementById("land").value;
+
+    const crop =
+        document.getElementById("crop").value;
+
+    const insurance =
+        document.getElementById("insurance").value;
+
+
+    if (!farmerType || !land || !crop || !insurance) {
+
+        alert("Please complete all fields.");
+
+        return;
+
+    }
+
+
+    const results =
+        document.getElementById("schemeResults");
+
+
+    results.innerHTML = "";
+
+
+    if (
+        farmerType === "yes" &&
+        land === "yes"
+    ) {
+
+        results.innerHTML += `
+
+            <div class="scheme-item">
+
+                <h3>🌾 PM-KISAN</h3>
+
+                <p>
+                    May be relevant for eligible farmer families
+                    subject to the applicable government conditions.
+                </p>
+
+            </div>
+
+        `;
+
+
+        results.innerHTML += `
+
+            <div class="scheme-item">
+
+                <h3>🌱 Agriculture Support Schemes</h3>
+
+                <p>
+                    You may be eligible for agriculture-related
+                    support depending on your state and farmer category.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    if (insurance === "yes") {
+
+        results.innerHTML += `
+
+            <div class="scheme-item">
+
+                <h3>🛡️ Crop Insurance</h3>
+
+                <p>
+                    Crop insurance information may be relevant
+                    for your farming profile.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    if (results.innerHTML === "") {
+
+        results.innerHTML = `
+
+            <p>
+                No matching scheme found from this basic
+                project-level check.
+            </p>
+
+        `;
+
+    }
+
+
+    document.getElementById("resultSection")
+        .style.display = "block";
+
+
+    document.getElementById("schemeNote")
+        .style.display = "block";
+
+}
+
+</script>
+
+</body>
+
+</html>

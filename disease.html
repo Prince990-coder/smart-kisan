@@ -2,14 +2,18 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Crop Doctor - KhetNexus</title>
 
     <link rel="stylesheet" href="css/style.css">
 
     <style>
+
         .doctor-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -78,6 +82,24 @@
             margin-bottom: 8px;
         }
 
+        .symptom-box {
+            margin-top: 18px;
+        }
+
+        .symptom-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .symptom-box select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
         .warning {
             margin-top: 20px;
             padding: 15px;
@@ -87,15 +109,20 @@
         }
 
         @media (max-width: 750px) {
+
             .doctor-layout {
                 grid-template-columns: 1fr;
             }
+
         }
+
     </style>
 
 </head>
 
+
 <body>
+
 
 <header class="navbar">
 
@@ -104,15 +131,30 @@
     </a>
 
     <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="expert.html">Expert Advice</a>
-        <button class="btn btn-outline" onclick="logout()">Logout</button>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="expert.html">
+            Expert Advice
+        </a>
+
+        <button
+            class="btn btn-outline"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
     </nav>
 
 </header>
 
 
 <main class="container">
+
 
     <div class="page-title">
 
@@ -121,27 +163,32 @@
         </div>
 
         <h1>
-            Crop Doctor 🦠
+            Crop Doctor 🩺
         </h1>
 
         <p>
-            Upload a crop image to check its health.
+            Upload a crop image and select visible symptoms
+            for a basic project-level assessment.
         </p>
 
     </div>
 
 
+
     <div class="doctor-layout">
 
 
-        <!-- UPLOAD SECTION -->
+        <!-- UPLOAD -->
 
         <div class="card">
 
-            <h2>📷 Upload Crop Image</h2>
+            <h2>
+                📷 Crop Image
+            </h2>
 
             <p class="muted">
-                Select the crop and upload a clear image of the affected leaf.
+                Select the crop and upload a clear image
+                of the affected leaf.
             </p>
 
 
@@ -151,7 +198,8 @@
                     Select Crop
                 </label>
 
-                <select id="crop">
+                <select id="crop"
+                        onchange="updateSymptoms()">
 
                     <option value="">
                         Select crop
@@ -186,6 +234,47 @@
             </div>
 
 
+            <!-- SYMPTOM -->
+
+            <div class="symptom-box">
+
+                <label for="symptom">
+                    Visible Symptom
+                </label>
+
+                <select id="symptom">
+
+                    <option value="">
+                        Select symptom
+                    </option>
+
+                    <option value="spots">
+                        Yellow / Brown Spots
+                    </option>
+
+                    <option value="yellow">
+                        Yellow Leaves
+                    </option>
+
+                    <option value="curling">
+                        Leaf Curling
+                    </option>
+
+                    <option value="dry">
+                        Dry / Burnt Leaves
+                    </option>
+
+                    <option value="insects">
+                        Insects / Pest Damage
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
             <div class="upload-box">
 
                 <div class="upload-icon">
@@ -204,19 +293,26 @@
                     id="image"
                     type="file"
                     accept="image/*"
-                    onchange="previewImage()"
-                >
+                    onchange="previewImage()">
 
             </div>
 
 
-            <div id="previewBox" class="preview-box">
+            <!-- PREVIEW -->
+
+            <div
+                id="previewBox"
+                class="preview-box">
 
                 <p>
-                    <strong>Image Preview</strong>
+                    <strong>
+                        Image Preview
+                    </strong>
                 </p>
 
-                <img id="preview" alt="Crop image preview">
+                <img
+                    id="preview"
+                    alt="Crop image preview">
 
             </div>
 
@@ -224,15 +320,17 @@
             <button
                 class="btn btn-primary"
                 style="margin-top:20px;width:100%;"
-                onclick="analyze()"
-            >
+                onclick="analyze()">
+
                 🔍 Analyze Crop
+
             </button>
 
         </div>
 
 
-        <!-- RESULT SECTION -->
+
+        <!-- RESULT -->
 
         <div class="card result-box">
 
@@ -244,11 +342,17 @@
 
                 <div class="alert">
 
-                    🌿 <strong>Ready for Analysis</strong>
+                    🌿
+                    <strong>
+                        Ready for Analysis
+                    </strong>
 
                     <p style="margin-bottom:0;">
-                        Select a crop and upload an image.
-                        Then click <strong>Analyze Crop</strong>.
+
+                        Select a crop, symptom and upload
+                        an image. Then click
+                        <strong>Analyze Crop</strong>.
+
                     </p>
 
                 </div>
@@ -260,20 +364,27 @@
     </div>
 
 
+
     <div class="warning">
 
-        ⚠️ <strong>Important:</strong>
-        This current version is a project prototype and does not contain
-        a trained AI disease-detection model. The result shown by this
-        prototype is for demonstration only. Actual disease diagnosis
-        should be verified by an agricultural expert.
+        ⚠️
+        <strong>Important:</strong>
+
+        This is a project-level prototype and does not
+        contain a trained AI disease-detection model.
+        The assessment is for demonstration only.
+        Actual disease diagnosis and pesticide
+        recommendations should be verified by an
+        agricultural expert.
 
     </div>
+
 
 </main>
 
 
 <script>
+
 
 function logout() {
 
@@ -283,6 +394,54 @@ function logout() {
 
 }
 
+
+/* =========================
+   SYMPTOMS
+========================= */
+
+function updateSymptoms() {
+
+    const crop =
+        document.getElementById("crop").value;
+
+    const symptom =
+        document.getElementById("symptom");
+
+
+    symptom.innerHTML = `
+
+        <option value="">
+            Select symptom
+        </option>
+
+        <option value="spots">
+            Yellow / Brown Spots
+        </option>
+
+        <option value="yellow">
+            Yellow Leaves
+        </option>
+
+        <option value="curling">
+            Leaf Curling
+        </option>
+
+        <option value="dry">
+            Dry / Burnt Leaves
+        </option>
+
+        <option value="insects">
+            Insects / Pest Damage
+        </option>
+
+    `;
+
+}
+
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
 
 function previewImage() {
 
@@ -297,6 +456,19 @@ function previewImage() {
 
 
     if (!file) {
+
+        previewBox.style.display = "none";
+
+        return;
+
+    }
+
+
+    if (!file.type.startsWith("image/")) {
+
+        alert("Please select a valid image.");
+
+        document.getElementById("image").value = "";
 
         previewBox.style.display = "none";
 
@@ -325,10 +497,17 @@ function previewImage() {
 }
 
 
+/* =========================
+   ANALYZE
+========================= */
+
 function analyze() {
 
     const crop =
         document.getElementById("crop").value;
+
+    const symptom =
+        document.getElementById("symptom").value;
 
     const file =
         document.getElementById("image").files[0];
@@ -341,9 +520,26 @@ function analyze() {
 
         result.innerHTML = `
 
-            <div class="alert danger">
+            <div class="alert">
 
                 🌾 Please select a crop first.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (!symptom) {
+
+        result.innerHTML = `
+
+            <div class="alert">
+
+                🔎 Please select the visible symptom.
 
             </div>
 
@@ -358,7 +554,7 @@ function analyze() {
 
         result.innerHTML = `
 
-            <div class="alert danger">
+            <div class="alert">
 
                 📷 Please upload a crop image first.
 
@@ -371,109 +567,165 @@ function analyze() {
     }
 
 
-    /*
-        DEMO ASSESSMENT
-
-        This is NOT an AI model.
-        It is only for prototype demonstration.
-    */
+    let issue =
+        "Possible Crop Health Issue";
 
 
-    let disease =
-        "Healthy / Further Verification Recommended";
+    let advice = [];
 
-    let confidence =
-        "Demo Assessment";
 
-    let advice = [
+    /* =========================
+       BASIC DEMO ASSESSMENT
+    ========================= */
 
-        "Keep monitoring the crop regularly.",
 
-        "Maintain proper irrigation.",
+    if (symptom === "spots") {
 
-        "Remove severely damaged leaves if necessary.",
+        issue =
+            "Possible Leaf Spot / Fungal Stress";
 
-        "Consult an agricultural expert if symptoms increase."
+        advice = [
 
-    ];
+            "Check leaves for spreading yellow or brown spots.",
+
+            "Avoid excessive moisture on the leaves.",
+
+            "Maintain proper field drainage.",
+
+            "Consult an agricultural expert before using fungicides."
+
+        ];
+
+    }
+
+
+    else if (symptom === "yellow") {
+
+        issue =
+            "Possible Nutrient Stress / Leaf Yellowing";
+
+        advice = [
+
+            "Check soil moisture and drainage.",
+
+            "Inspect the crop for nutrient deficiency symptoms.",
+
+            "Avoid excessive irrigation.",
+
+            "Consider soil testing before applying fertilizer."
+
+        ];
+
+    }
+
+
+    else if (symptom === "curling") {
+
+        issue =
+            "Possible Pest or Environmental Stress";
+
+        advice = [
+
+            "Inspect the underside of leaves for insects.",
+
+            "Check the crop for spreading symptoms.",
+
+            "Maintain suitable irrigation.",
+
+            "Consult an expert before pesticide application."
+
+        ];
+
+    }
+
+
+    else if (symptom === "dry") {
+
+        issue =
+            "Possible Water or Heat Stress";
+
+        advice = [
+
+            "Check soil moisture.",
+
+            "Avoid prolonged water stress.",
+
+            "Inspect leaves for pest or disease damage.",
+
+            "Follow local irrigation recommendations."
+
+        ];
+
+    }
+
+
+    else if (symptom === "insects") {
+
+        issue =
+            "Possible Pest Damage";
+
+        advice = [
+
+            "Inspect leaves and stems carefully.",
+
+            "Check the severity of pest infestation.",
+
+            "Use integrated pest-management practices where suitable.",
+
+            "Consult an agricultural expert before pesticide use."
+
+        ];
+
+    }
+
+
+    /* =========================
+       CROP-SPECIFIC MESSAGE
+    ========================= */
+
+    let cropMessage =
+        "";
 
 
     if (crop === "Wheat") {
 
-        disease =
-            "Possible Leaf Health Issue";
-
-        advice = [
-
-            "Check leaves for yellow or brown spots.",
-
-            "Avoid unnecessary irrigation.",
-
-            "Monitor the crop for spreading symptoms.",
-
-            "Consult an agricultural expert before using pesticides."
-
-        ];
+        cropMessage =
+            "Monitor wheat leaves and check for spreading symptoms.";
 
     }
 
+    else if (crop === "Rice") {
 
-    if (crop === "Rice") {
-
-        disease =
-            "Possible Leaf Disease";
-
-        advice = [
-
-            "Check leaves for spots or discoloration.",
-
-            "Maintain appropriate field water levels.",
-
-            "Remove severely affected plant material where appropriate.",
-
-            "Seek expert confirmation before treatment."
-
-        ];
+        cropMessage =
+            "Maintain suitable water management and monitor rice leaves.";
 
     }
 
+    else if (crop === "Mustard") {
 
-    if (crop === "Mustard") {
-
-        disease =
-            "Possible Leaf Spot / Stress";
-
-        advice = [
-
-            "Inspect leaves for dark or yellow spots.",
-
-            "Avoid excessive moisture.",
-
-            "Monitor nearby plants for similar symptoms.",
-
-            "Consult an agricultural expert for confirmation."
-
-        ];
+        cropMessage =
+            "Inspect mustard leaves regularly for spots and pests.";
 
     }
 
+    else if (crop === "Cotton") {
 
-    if (crop === "Cotton") {
+        cropMessage =
+            "Inspect cotton leaves carefully for insects and curling.";
 
-        disease =
-            "Possible Leaf Health Problem";
+    }
 
-        advice = [
+    else if (crop === "Maize") {
 
-            "Check leaves carefully for spots or curling.",
+        cropMessage =
+            "Monitor maize leaves for spots, dryness and pest damage.";
 
-            "Inspect the crop for insects or pests.",
+    }
 
-            "Maintain proper irrigation.",
+    else {
 
-            "Get expert confirmation before pesticide application."
-
-        ];
+        cropMessage =
+            "Continue regular crop monitoring.";
 
     }
 
@@ -484,15 +736,17 @@ function analyze() {
 
             <div class="result-title">
 
-                🌱 ${disease}
+                🌱 ${issue}
 
             </div>
 
+
             <span class="confidence">
 
-                ${confidence}
+                Demo Assessment
 
             </span>
+
 
             <p>
 
@@ -501,12 +755,31 @@ function analyze() {
 
             </p>
 
+
+            <p>
+
+                <strong>Observed Symptom:</strong>
+                ${document.getElementById("symptom")
+                    .selectedOptions[0].text}
+
+            </p>
+
+
             <p>
 
                 <strong>Image:</strong>
                 ${file.name}
 
             </p>
+
+
+            <p>
+
+                🌾
+                ${cropMessage}
+
+            </p>
+
 
         </div>
 
@@ -518,21 +791,30 @@ function analyze() {
 
         <ul class="advice-list">
 
-            ${advice.map(item =>
+            ${advice.map(function(item) {
 
-                `<li>${item}</li>`
+                return `<li>${item}</li>`;
 
-            ).join("")}
+            }).join("")}
 
         </ul>
 
 
         <div class="alert">
 
-            👨‍🌾 <strong>Expert Verification:</strong>
+            👨‍🌾
+            <strong>
+                Expert Verification:
+            </strong>
 
-            For accurate disease identification and pesticide
-            recommendation, consult an agricultural expert.
+            <p style="margin-bottom:0;">
+
+                This is a demonstration assessment.
+                Consult an agricultural expert for
+                accurate disease identification and
+                treatment recommendations.
+
+            </p>
 
         </div>
 
@@ -540,7 +822,9 @@ function analyze() {
 
 }
 
+
 </script>
+
 
 </body>
 

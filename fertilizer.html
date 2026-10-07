@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fertilizer Calculator - KhetNexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .calculator-form {
+            max-width: 700px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .result-grid {
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="market.html">Market</a>
+        <a href="marketplace.html">Marketplace</a>
+
+        <button class="btn btn-outline" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARMING TOOL
+        </div>
+
+        <h1>
+            Fertilizer Calculator 🧮
+        </h1>
+
+        <p>
+            Estimate fertilizer quantity based on crop and farm area.
+        </p>
+
+    </div>
+
+
+    <div class="card calculator-form">
+
+        <h2>Enter Farm Details</h2>
+
+
+        <div class="form-group">
+
+            <label for="crop">
+                Select Crop
+            </label>
+
+            <select id="crop">
+
+                <option value="">
+                    Select Crop
+                </option>
+
+                <option value="wheat">
+                    Wheat
+                </option>
+
+                <option value="rice">
+                    Rice
+                </option>
+
+                <option value="mustard">
+                    Mustard
+                </option>
+
+                <option value="maize">
+                    Maize
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="area">
+                Farm Area (Acre)
+            </label>
+
+            <input
+                type="number"
+                id="area"
+                placeholder="Example: 2"
+                min="0"
+                step="0.1"
+            >
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="calculateFertilizer()">
+
+            Calculate Requirement
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="grid result-grid"
+        id="resultSection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <div class="icon">🌾</div>
+
+            <h3>Crop</h3>
+
+            <strong id="resultCrop">-</strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🌱</div>
+
+            <h3>Urea</h3>
+
+            <strong id="urea">0 kg</strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🧪</div>
+
+            <h3>DAP</h3>
+
+            <strong id="dap">0 kg</strong>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">🧂</div>
+
+            <h3>MOP</h3>
+
+            <strong id="mop">0 kg</strong>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="alert"
+        id="note"
+        style="display:none; margin-top:24px;"
+    >
+        ⚠️ These are approximate project estimates.
+        Actual fertilizer requirements should be confirmed
+        using soil testing and local agricultural guidance.
+    </div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function calculateFertilizer() {
+
+    const crop =
+        document.getElementById("crop").value;
+
+    const area =
+        Number(document.getElementById("area").value);
+
+
+    if (!crop) {
+
+        alert("Please select a crop.");
+
+        return;
+
+    }
+
+
+    if (!area || area <= 0) {
+
+        alert("Please enter a valid farm area.");
+
+        return;
+
+    }
+
+
+    /*
+       Approximate project values
+       per acre.
+    */
+
+    const fertilizerRates = {
+
+        wheat: {
+            urea: 90,
+            dap: 45,
+            mop: 20
+        },
+
+        rice: {
+            urea: 100,
+            dap: 50,
+            mop: 25
+        },
+
+        mustard: {
+            urea: 65,
+            dap: 40,
+            mop: 15
+        },
+
+        maize: {
+            urea: 100,
+            dap: 50,
+            mop: 20
+        }
+
+    };
+
+
+    const rate =
+        fertilizerRates[crop];
+
+
+    const urea =
+        rate.urea * area;
+
+    const dap =
+        rate.dap * area;
+
+    const mop =
+        rate.mop * area;
+
+
+    const cropName =
+        crop.charAt(0).toUpperCase() +
+        crop.slice(1);
+
+
+    document.getElementById("resultCrop")
+        .textContent = cropName;
+
+
+    document.getElementById("urea")
+        .textContent =
+        urea.toFixed(1) + " kg";
+
+
+    document.getElementById("dap")
+        .textContent =
+        dap.toFixed(1) + " kg";
+
+
+    document.getElementById("mop")
+        .textContent =
+        mop.toFixed(1) + " kg";
+
+
+    document.getElementById("resultSection")
+        .style.display = "grid";
+
+
+    document.getElementById("note")
+        .style.display = "block";
+
+}
+
+</script>
+
+</body>
+
+</html>

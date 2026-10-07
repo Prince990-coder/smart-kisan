@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farm Summary - KhetNexus</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .summary-grid {
+            margin-top: 24px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .summary-form {
+            max-width: 700px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a class="logo" href="dashboard.html">
+        🌾 KhetNexus
+    </a>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="weather.html">Weather</a>
+        <a href="market.html">Market</a>
+        <a href="marketplace.html">Marketplace</a>
+
+        <button class="btn btn-outline" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-title">
+
+        <div class="eyebrow">
+            FARM MANAGEMENT
+        </div>
+
+        <h1>
+            Farm Summary 📊
+        </h1>
+
+        <p>
+            View your crop, production, expense and profit summary.
+        </p>
+
+    </div>
+
+
+    <div class="card summary-form">
+
+        <h2>Enter Farm Summary</h2>
+
+
+        <div class="form-group">
+
+            <label for="crop">
+                Crop
+            </label>
+
+            <select id="crop">
+
+                <option value="">
+                    Select Crop
+                </option>
+
+                <option value="Wheat">
+                    Wheat
+                </option>
+
+                <option value="Rice">
+                    Rice
+                </option>
+
+                <option value="Mustard">
+                    Mustard
+                </option>
+
+                <option value="Maize">
+                    Maize
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="area">
+                Farm Area (Acre)
+            </label>
+
+            <input
+                type="number"
+                id="area"
+                placeholder="Example: 2"
+                min="0"
+                step="0.1"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="production">
+                Production (Quintal)
+            </label>
+
+            <input
+                type="number"
+                id="production"
+                placeholder="Example: 20"
+                min="0"
+                step="0.1"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="expense">
+                Total Expense (₹)
+            </label>
+
+            <input
+                type="number"
+                id="expense"
+                placeholder="Example: 25000"
+                min="0"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="price">
+                Selling Price (₹ per Quintal)
+            </label>
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Example: 2450"
+                min="0"
+            >
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="generateSummary()">
+
+            Generate Summary
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="grid summary-grid"
+        id="summarySection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <div class="icon">
+                🌾
+            </div>
+
+            <h3>
+                Crop
+            </h3>
+
+            <span
+                class="summary-value"
+                id="summaryCrop">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                📐
+            </div>
+
+            <h3>
+                Farm Area
+            </h3>
+
+            <span
+                class="summary-value"
+                id="summaryArea">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                ⚖️
+            </div>
+
+            <h3>
+                Production
+            </h3>
+
+            <span
+                class="summary-value"
+                id="summaryProduction">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                💸
+            </div>
+
+            <h3>
+                Total Expense
+            </h3>
+
+            <span
+                class="summary-value"
+                id="summaryExpense">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                💰
+            </div>
+
+            <h3>
+                Total Revenue
+            </h3>
+
+            <span
+                class="summary-value"
+                id="summaryRevenue">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon">
+                📈
+            </div>
+
+            <h3>
+                Profit / Loss
+            </h3>
+
+            <span
+                class="summary-value"
+                id="summaryProfit">
+                ₹0
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="alert"
+        id="summaryMessage"
+        style="display:none; margin-top:24px;"
+    ></div>
+
+</main>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("smartKisanUser");
+
+    window.location.href = "login.html";
+
+}
+
+
+function generateSummary() {
+
+    const crop =
+        document.getElementById("crop").value;
+
+    const area =
+        Number(document.getElementById("area").value);
+
+    const production =
+        Number(document.getElementById("production").value);
+
+    const expense =
+        Number(document.getElementById("expense").value);
+
+    const price =
+        Number(document.getElementById("price").value);
+
+
+    if (!crop) {
+
+        alert("Please select a crop.");
+
+        return;
+
+    }
+
+
+    if (!area || area <= 0) {
+
+        alert("Please enter a valid farm area.");
+
+        return;
+
+    }
+
+
+    if (!production || production <= 0) {
+
+        alert("Please enter a valid production quantity.");
+
+        return;
+
+    }
+
+
+    if (isNaN(expense) || expense < 0) {
+
+        alert("Please enter a valid expense.");
+
+        return;
+
+    }
+
+
+    if (!price || price <= 0) {
+
+        alert("Please enter a valid selling price.");
+
+        return;
+
+    }
+
+
+    const revenue =
+        production * price;
+
+    const profit =
+        revenue - expense;
+
+
+    document.getElementById("summaryCrop")
+        .textContent = crop;
+
+
+    document.getElementById("summaryArea")
+        .textContent =
+        area + " Acre";
+
+
+    document.getElementById("summaryProduction")
+        .textContent =
+        production + " Quintal";
+
+
+    document.getElementById("summaryExpense")
+        .textContent =
+        "₹" + expense.toLocaleString("en-IN");
+
+
+    document.getElementById("summaryRevenue")
+        .textContent =
+        "₹" + revenue.toLocaleString("en-IN");
+
+
+    document.getElementById("summaryProfit")
+        .textContent =
+        "₹" + profit.toLocaleString("en-IN");
+
+
+    document.getElementById("summarySection")
+        .style.display = "grid";
+
+
+    const message =
+        document.getElementById("summaryMessage");
+
+
+    message.style.display = "block";
+
+
+    if (profit > 0) {
+
+        message.innerHTML =
+            "📈 <strong>Profitable Farm:</strong> " +
+            "Estimated profit is ₹" +
+            profit.toLocaleString("en-IN") +
+            ".";
+
+    }
+
+    else if (profit < 0) {
+
+        message.innerHTML =
+            "📉 <strong>Loss:</strong> " +
+            "Estimated loss is ₹" +
+            Math.abs(profit).toLocaleString("en-IN") +
+            ".";
+
+    }
+
+    else {
+
+        message.innerHTML =
+            "⚖️ <strong>Break-even:</strong> " +
+            "Revenue and expense are equal.";
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
